@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class niso_lab1 {
 
 	public static void main(String[] args) {
+		/**
 		String bits_x = "00000";
 		double chi = 2.5;
 		int repetitions = 20;
@@ -18,6 +19,7 @@ public class niso_lab1 {
 		System.out.println("---------");
 		ex5(0.2, 10, 10, 2, 4);
 		System.out.println("---------");
+		**/
 		ex6();
 	}
 
@@ -141,8 +143,8 @@ public class niso_lab1 {
 		sb.append(t);
 		sb.append("\t");
 		sb.append(fbest);
-		sb.append("\t");
-		sb.append(xbest);
+		//sb.append("\t");
+		//sb.append(xbest);
 
 		System.out.println(sb);
 
@@ -153,10 +155,13 @@ public class niso_lab1 {
 	}
 
 	private static void ex6() {
-		double chi = 0.03125;
+		double chi = 2.375;//0.03125;
 
 		while (chi < 3) {
-			simpleGeneticAlgorithm(200, chi, 2, 100, 5000);
+			for(int i = 0; i < 100; i++){
+				simpleGeneticAlgorithm(200, chi, 2, 100, 5000);
+			}
+			
 			chi += 0.03125;
 		}
 	}
