@@ -155,7 +155,7 @@ public class niso_lab1 {
 	}
 
 	private static void ex6() {
-		double chi = 2.375;//0.03125;
+		double chi = 2.46875;//0.03125;
 
 		while (chi < 3) {
 			for(int i = 0; i < 100; i++){
