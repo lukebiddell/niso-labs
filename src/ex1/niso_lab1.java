@@ -4,23 +4,73 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class niso_lab1 {
 
+	private static double chi;
+	private static int repetitions;
+	private static String bits_x;
+	private static String bits_y;
+	private static int k;
+	private static String population;
+	private static int lambda;
+	private static int question;
+	private static int n;
+
 	public static void main(String[] args) {
+		for (int i = 0; i < args.length; i++) {
+			if (args[i].startsWith("-")) {
+				if (args[i].substring(1).equals("question"))
+					question = Integer.parseInt(args[++i]);
+				else if (args[i].substring(1).equals("chi"))
+					chi = Double.parseDouble(args[++i]);
+				else if (args[i].substring(1).equals("repetitions"))
+					repetitions = Integer.parseInt(args[++i]);
+				else if (args[i].substring(1).equals("bits_x"))
+					bits_x = args[++i];
+				else if (args[i].substring(1).equals("bits_y"))
+					bits_y = args[++i];
+				else if (args[i].substring(1).equals("k"))
+					k = Integer.parseInt(args[++i]);
+				else if (args[i].substring(1).equals("population"))
+					population = args[++i];
+				else if (args[i].substring(1).equals("lambda"))
+					lambda = Integer.parseInt(args[++i]);
+				else if (args[i].substring(1).equals("n"))
+					n = Integer.parseInt(args[++i]);
+			}
+		}
+
+		switch (question) {
+		case 1:
+			ex1(bits_x, chi, repetitions);
+			break;
+		case 2:
+			ex2(bits_x, bits_y, repetitions);
+			break;
+		case 3:
+			ex3(bits_x);
+			break;
+		case 4:
+			ex4(population, k, repetitions);
+			break;
+		case 5:
+			ex5(chi, n, lambda, k, repetitions);
+			break;
+		case 6: 
+			ex6();
+			break;
+		default:
+			System.err.println("Question number invalid");
+			break;
+		}
 		/**
-		String bits_x = "00000";
-		double chi = 2.5;
-		int repetitions = 20;
-		ex1(bits_x, chi, repetitions);
-		System.out.println("---------");
-		ex2("00000", "11111", 4);
-		System.out.println("---------");
-		ex3("01010");
-		System.out.println("---------");
-		ex4("0000 1111 1110 1100 1000 0000", 2, 4);
-		System.out.println("---------");
-		ex5(0.2, 10, 10, 2, 4);
-		System.out.println("---------");
-		**/
-		ex6();
+		 * String bits_x = "00000"; double chi = 2.5; int repetitions = 20;
+		 * ex1(bits_x, chi, repetitions); System.out.println("---------");
+		 * ex2("00000", "11111", 4); System.out.println("---------");
+		 * ex3("01010"); System.out.println("---------"); ex4("0000 1111 1110
+		 * 1100 1000 0000", 2, 4); System.out.println("---------"); ex5(0.2, 10,
+		 * 10, 2, 4); System.out.println("---------");
+		 **/
+
+		// ex6();
 	}
 
 	private static void ex1(String bits_x_string, double chi, int repetitions) {
@@ -143,8 +193,8 @@ public class niso_lab1 {
 		sb.append(t);
 		sb.append("\t");
 		sb.append(fbest);
-		//sb.append("\t");
-		//sb.append(xbest);
+		// sb.append("\t");
+		// sb.append(xbest);
 
 		System.out.println(sb);
 
@@ -155,13 +205,13 @@ public class niso_lab1 {
 	}
 
 	private static void ex6() {
-		double chi = 2.46875;//0.03125;
+		double chi = 2.46875;// 0.03125;
 
 		while (chi < 3) {
-			for(int i = 0; i < 100; i++){
+			for (int i = 0; i < 100; i++) {
 				simpleGeneticAlgorithm(200, chi, 2, 100, 5000);
 			}
-			
+
 			chi += 0.03125;
 		}
 	}
