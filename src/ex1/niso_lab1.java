@@ -213,7 +213,7 @@ public class niso_lab1 {
 
 	private static void ex6() {
 		try {
-			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_mutationrate.txt"));
+			/*PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_mutationrate.txt"));
 
 			double chi = 0.125;
 			while (chi < 3) {
@@ -249,18 +249,18 @@ public class niso_lab1 {
 				lambda += 25;
 			}
 
-			out.close();
+			out.close();*/
 
 			
-			out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsize.txt"));
+			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsize.txt"));
 			
 			int k = 2;
-			while (lambda <= 5) {
+			while (k <= 5) {
 				for (int i = 0; i < 100; i++) {
 					simpleGeneticAlgorithm(200, 0.6, k, 100, 20000, out);
 				}
 
-				lambda += 1;
+				k += 1;
 			}
 
 			out.close();
