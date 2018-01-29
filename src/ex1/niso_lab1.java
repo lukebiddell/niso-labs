@@ -1,5 +1,10 @@
 package ex1;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class niso_lab1 {
@@ -54,7 +59,7 @@ public class niso_lab1 {
 		case 5:
 			ex5(chi, n, lambda, k, repetitions);
 			break;
-		case 6: 
+		case 6:
 			ex6();
 			break;
 		default:
@@ -151,7 +156,7 @@ public class niso_lab1 {
 	}
 
 	// TODO: Add error checking for requirements
-	private static void simpleGeneticAlgorithm(int n, double chi, int k, int lambda, int max_t) {
+	private static void simpleGeneticAlgorithm(int n, double chi, int k, int lambda, int max_t, PrintStream out) {
 		Population pop = new Population();
 		pop.populateUniformly(lambda, n);
 		// System.out.println(pop);
@@ -197,23 +202,75 @@ public class niso_lab1 {
 		// sb.append(xbest);
 
 		System.out.println(sb);
-
+		if (out != null) {
+			out.println(sb);
+		}
 	}
 
 	private static void simpleGeneticAlgorithm(int n, double chi, int k, int lambda) {
-		simpleGeneticAlgorithm(n, chi, k, lambda, Integer.MAX_VALUE);
+		simpleGeneticAlgorithm(n, chi, k, lambda, Integer.MAX_VALUE, null);
 	}
 
 	private static void ex6() {
-		double chi = 2.46875;// 0.03125;
+		try {
+			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_mutationrate.txt"));
 
-		while (chi < 3) {
-			for (int i = 0; i < 100; i++) {
-				simpleGeneticAlgorithm(200, chi, 2, 100, 5000);
+			double chi = 0.125;
+			while (chi < 3) {
+				for (int i = 0; i < 100; i++) {
+					simpleGeneticAlgorithm(200, chi, 2, 100, 20000, out);
+				}
+				
+				chi += 0.125;
+			}
+			out.close();
+			
+			
+			out = new PrintStream(new FileOutputStream("logs/runtime_vs_problemsize.txt"));
+			int n = 15;
+			while (n < 200) {
+				for (int i = 0; i < 100; i++) {
+					simpleGeneticAlgorithm(n, 0.6, 2, 100, 20000, out);
+				}
+
+				n += 5;
+			}
+			out.close();
+
+			
+			out = new PrintStream(new FileOutputStream("logs/runtime_vs_populationsize.txt"));
+			
+			int lambda = 10;
+			while (lambda <= 1000) {
+				for (int i = 0; i < 100; i++) {
+					simpleGeneticAlgorithm(200, 0.6, 2, lambda, 20000, out);
+				}
+
+				lambda += 25;
 			}
 
-			chi += 0.03125;
+			out.close();
+
+			
+			out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsize.txt"));
+			
+			int k = 2;
+			while (lambda <= 5) {
+				for (int i = 0; i < 100; i++) {
+					simpleGeneticAlgorithm(200, 0.6, k, 100, 20000, out);
+				}
+
+				lambda += 1;
+			}
+
+			out.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.err.println("File not found");
 		}
+
 	}
 
 }
