@@ -1,4 +1,4 @@
-package ex1;
+
 
 import java.util.BitSet;
 import java.util.concurrent.ThreadLocalRandom;

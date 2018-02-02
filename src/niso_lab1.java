@@ -1,4 +1,4 @@
-package ex1;
+
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -252,7 +252,7 @@ public class niso_lab1 {
 			out.close();*/
 
 			
-			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsize.txt"));
+			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsizen.txt"));
 			
 			int k = 2;
 			while (k <= 5) {
