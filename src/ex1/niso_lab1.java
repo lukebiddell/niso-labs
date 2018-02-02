@@ -202,7 +202,7 @@ public class niso_lab1 {
 		// sb.append(xbest);
 
 		System.out.println(sb);
-		if (out != null) {
+		if (out != null && out != System.out) {
 			out.println(sb);
 		}
 	}
