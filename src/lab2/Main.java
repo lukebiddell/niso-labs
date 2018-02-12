@@ -62,7 +62,7 @@ public class Main {
 	private static void ex1(String assignment_str, String clause_str) {
 		BitString assignment = new BitString(assignment_str);
 		Clause clause = new Clause(clause_str);
-		
+
 		System.out.println(clause.satisfiedByInt(assignment));
 	}
 
@@ -76,7 +76,7 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private static void ex3(String wdimacs, int time_budget, int repetitions) {

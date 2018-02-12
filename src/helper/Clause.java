@@ -1,8 +1,6 @@
 package helper;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-
 import javax.naming.directory.InvalidAttributeValueException;
 
 public class Clause {
@@ -22,10 +20,9 @@ public class Clause {
 		literals = new LinkedList<Literal>();
 
 		for (int i = 1; i < values.length; i++) {
-			if (values[i].equals("0")){
+			if (values[i].equals("0")) {
 				break;
-			}
-			else {
+			} else {
 				try {
 					literals.add(new Literal(Integer.parseInt(values[i])));
 				} catch (NumberFormatException | InvalidAttributeValueException e) {
@@ -33,23 +30,22 @@ public class Clause {
 				}
 			}
 
-			
 		}
 
 		return;
 
 	}
-	
-	public boolean satisfiedByBool(BitString assignment){
-		for(Literal literal : literals){
-			if(literal.satisfiedBy(assignment)){
+
+	public boolean satisfiedByBool(BitString assignment) {
+		for (Literal literal : literals) {
+			if (literal.satisfiedBy(assignment)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public int satisfiedByInt(BitString assignment){
+
+	public int satisfiedByInt(BitString assignment) {
 		if (satisfiedByBool(assignment))
 			return 1;
 		else

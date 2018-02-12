@@ -1,11 +1,8 @@
 package helper;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.LinkedList;
 
 public class MaxSatInstance {
 
@@ -15,30 +12,43 @@ public class MaxSatInstance {
 
 	private BufferedReader br;
 
-	public MaxSatInstance() {
-
-	}
-
 	public MaxSatInstance(String file) throws IOException {
 		loadFile(file);
 	}
 
-	private void loadFile(String file) throws IOException{
+	private void loadFile(String file) throws IOException {
 		br = new BufferedReader(new FileReader(file));
-		String line = null;  
-		while ((line = br.readLine()) != null )  
-		{  
-			if(line.startsWith("p")){
-				break;
-			} 
-			if(line.startsWith("c")){
-				//break;
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			if (line.startsWith("p")) {
+				setParameters(line);
+				br = new BufferedReader(new FileReader(file));
+				return;
 			}
-		} 
+		}
+
+		throw new IllegalArgumentException("File doesn't contain p line");
+	}
+
+	private void setParameters(String line) {
+		String[] values = line.split(" ");
+		int length = values.length;
+
+		if (length > 5 || length < 4) {
+			throw new IllegalArgumentException("p line doesn't contain 4-5 arguments");
+		} else {
+			n = Integer.parseInt(values[2]);
+			m = Integer.parseInt(values[3]);
+			if (length == 4)
+				x = Integer.parseInt(values[4]);
+		}
 	}
 
 	private Clause getNextClause() throws IOException {
 		String line = br.readLine();
+
+		while (line != null && (line.startsWith("c") || line.startsWith("p")))
+			line = br.readLine();
 
 		if (line == null)
 			return null;
@@ -46,16 +56,16 @@ public class MaxSatInstance {
 			return new Clause(line);
 
 	}
-	
-	public int countClausesSatisfied(BitString assignment) throws IOException{
+
+	public int countClausesSatisfied(BitString assignment) throws IOException {
 		int count = 0;
 		Clause clause = getNextClause();
-		while(clause != null){
+		while (clause != null) {
 			count += clause.satisfiedByInt(assignment);
 			clause = getNextClause();
 		}
 		return count;
-		
+
 	}
 
 }
