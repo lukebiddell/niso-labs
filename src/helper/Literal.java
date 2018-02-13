@@ -8,11 +8,12 @@ public class Literal {
 	private final int indice;
 
 	public Literal(int literal) throws InvalidAttributeValueException {
-		positive = (literal > 0);
-		indice = Math.abs(literal);
-		if (indice == 0) {
+		if (literal == 0) {
 			throw new InvalidAttributeValueException("Literal value can't be zero");
 		}
+		
+		positive = (literal > 0);
+		indice = Math.abs(literal);
 	}
 
 	public boolean satisfiedBy(BitString assignment) {

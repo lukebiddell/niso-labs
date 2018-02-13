@@ -21,7 +21,7 @@ public class Clause {
 
 		for (int i = 1; i < values.length; i++) {
 			if (values[i].equals("0")) {
-				break;
+				return;
 			} else {
 				try {
 					literals.add(new Literal(Integer.parseInt(values[i])));
@@ -32,11 +32,9 @@ public class Clause {
 
 		}
 
-		return;
-
 	}
 
-	public boolean satisfiedByBool(BitString assignment) {
+	private boolean satisfiedByBool(BitString assignment) {
 		for (Literal literal : literals) {
 			if (literal.satisfiedBy(assignment)) {
 				return true;
