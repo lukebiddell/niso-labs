@@ -3,12 +3,13 @@ package helper;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class MaxSatInstance {
 
 	private int n, m, x;
 
-	// private LinkedList<Clause> clauses;
+	private LinkedList<Clause> clauses;
 
 	private BufferedReader br;
 
@@ -23,6 +24,7 @@ public class MaxSatInstance {
 			if (line.startsWith("p")) {
 				setParameters(line);
 				br = new BufferedReader(new FileReader(file));
+				loadClauses();
 				return;
 			}
 		}
@@ -43,6 +45,15 @@ public class MaxSatInstance {
 				x = Integer.parseInt(values[4]);
 		}
 	}
+	
+	private void loadClauses() throws IOException{
+		clauses = new LinkedList<Clause>();
+		Clause clause = getNextClause();
+		while (clause != null) {
+			clauses.add(clause);
+			clause = getNextClause();
+		}
+	}
 
 	private Clause getNextClause() throws IOException {
 		String line = br.readLine();
@@ -57,15 +68,32 @@ public class MaxSatInstance {
 
 	}
 
-	public int countClausesSatisfied(BitString assignment) throws IOException {
+	public int countClausesSatisfied(BitString assignment) {
 		int count = 0;
-		Clause clause = getNextClause();
-		while (clause != null) {
-			count += clause.satisfiedByInt(assignment);
-			clause = getNextClause();
+		if (clauses == null) {
+			System.out.println("Clauses empty..");
+			/*clauses = new LinkedList<Clause>();
+			Clause clause = getNextClause();
+			while (clause != null) {
+				clauses.add(clause);
+				count += clause.satisfiedByInt(assignment);
+				clause = getNextClause();
+			}*/
+		} else {
+			for (Clause clause : clauses) {
+				count += clause.satisfiedByInt(assignment);
+			}
 		}
 		return count;
 
+	}
+	
+	public int clauseCount(){
+		return m;
+	}
+	
+	public int variableCount(){
+		return n;
 	}
 
 }
