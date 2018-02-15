@@ -41,7 +41,7 @@ public class MaxSatInstance {
 		} else {
 			n = Integer.parseInt(values[2]);
 			m = Integer.parseInt(values[3]);
-			if (length == 4)
+			if (length == 5)
 				x = Integer.parseInt(values[4]);
 		}
 	}

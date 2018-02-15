@@ -2,6 +2,9 @@ package helper;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
@@ -44,6 +47,50 @@ public class GeneticAlgorithm {
 				bits_z.getBitSet().set(i, bits_x.getBitSet().get(i));
 			}
 		}
+
+		return bits_z;
+
+	}
+
+	public static ArrayList<BitString> kPointCrossover(BitString bits_x, BitString bits_y, int k) {
+		int n = bits_x.size();
+
+		BitString bits_z1 = new BitString(n);
+		BitString bits_z2 = new BitString(n);
+
+		ArrayList<Integer> crossoverPoints = new ArrayList<Integer>();
+
+		if (k > n)
+			k = n - 1;
+
+		for (int i = 0; i < k; i++) {
+			int r = ThreadLocalRandom.current().nextInt(n);
+			while (crossoverPoints.contains(r = ThreadLocalRandom.current().nextInt(n - 1)))
+				;
+			crossoverPoints.add(r);
+		}
+
+		boolean cross = false;
+
+		for (int i = 0; i < n; i++) {
+			if (!cross) {
+				bits_z1.getBitSet().set(i, bits_x.getBitSet().get(i));
+				bits_z2.getBitSet().set(i, bits_y.getBitSet().get(i));
+			} else {
+				bits_z1.getBitSet().set(i, bits_y.getBitSet().get(i));
+				bits_z2.getBitSet().set(i, bits_x.getBitSet().get(i));
+			}
+
+			if (crossoverPoints.contains(i)) {
+				cross = !cross;
+				//System.out.println("Cross: " + i + " " + cross);
+			}
+
+		}
+
+		ArrayList<BitString> bits_z = new ArrayList<BitString>();
+		bits_z.add(bits_z1);
+		bits_z.add(bits_z2);
 
 		return bits_z;
 
@@ -132,60 +179,64 @@ public class GeneticAlgorithm {
 	}
 
 	public static void simpleGeneticAlgorithmMaxSat(int n, double chi, int k, int lambda, int max_t, PrintStream out,
-			MaxSatInstance maxsat) {
+			MaxSatInstance maxsat, int time_budget) {
+
+		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
 		Population pop = new Population();
 		pop.populateUniformly(lambda, n);
 		// System.out.println(pop);
 
 		BitString xbest = new BitString(n);
-		int fbest = 0;
+		int nsat = Integer.MIN_VALUE;
 		int t = 0;
-		boolean found = false;
-		while (!found && t < max_t) {
+		boolean end = false;
+		while (!end && t < max_t) {
 			Population next_pop = new Population();
 			for (int i = 0; i < lambda; i++) {
 				BitString x = pop.tournament(k);
 				BitString y = pop.tournament(k);
-				BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
-				next_pop.add(new_bitstr);
+				//BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
+				//next_pop.add(new_bitstr);
+				//int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
 
-				int fitness = maxsat.countClausesSatisfied(new_bitstr);
-
-				if (fitness > fbest) {
+				ArrayList<BitString> new_bitstrs = kPointCrossover(mutate(x, chi), mutate(y, chi), 10);
+				next_pop.addAll(new_bitstrs);
+				int nsat0 = maxsat.countClausesSatisfied(new_bitstrs.get(0));
+				int nsat1 = maxsat.countClausesSatisfied(new_bitstrs.get(1));
+				int new_nsat = Integer.max(nsat0, nsat1);
+				BitString new_bitstr;
+				
+				if(nsat0 >= nsat1){
+					new_bitstr = new_bitstrs.get(0);
+				} else{
+					new_bitstr = new_bitstrs.get(1);
+				}
+				
+				if (new_nsat > nsat) {
 					xbest = new_bitstr;
-					fbest = maxsat.countClausesSatisfied(xbest);
-					System.out.println("New best - " + fbest + " / " + maxsat.clauseCount());
+					nsat = maxsat.countClausesSatisfied(xbest);
+					// System.out.println("New best - " + fbest + " / " +
+					// maxsat.clauseCount());
 				}
 
-				if (fitness >= maxsat.clauseCount()) {
-					found = true; // exit while loop
-					break;
+				if (new_nsat >= maxsat.clauseCount() || System.currentTimeMillis() >= endTime) {
+					end = true; // exit while loop
+					break; // exit for loop
 				}
 			}
-			
-			System.out.println(pop);
-			
+
 			pop = next_pop;
 
 			t++;
 		}
 
 		StringBuilder sb = new StringBuilder();
-
-		sb.append(n);
+		sb.append(t * lambda);
 		sb.append("\t");
-		sb.append(chi);
+		sb.append(nsat);
 		sb.append("\t");
-		sb.append(lambda);
-		sb.append("\t");
-		sb.append(k);
-		sb.append("\t");
-		sb.append(t);
-		sb.append("\t");
-		sb.append(fbest);
-		// sb.append("\t");
-		// sb.append(xbest);
+		sb.append(xbest);
 
 		System.out.println(sb);
 		if (out != null && out != System.out) {

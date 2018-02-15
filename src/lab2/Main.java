@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import helper.BitString;
@@ -54,9 +55,34 @@ public class Main {
 		case 6:
 			ex6();
 			break;
+		case 0:
+			test();
+			break;
 		default:
 			System.err.println("Question number invalid");
 			break;
+		}
+	}
+
+	private static void test() {
+		int n = 10;
+		int k = 3;
+		int repetitions = 10;
+		
+		BitString x = new BitString(n);
+		BitString y = new BitString(n);
+		
+		for(int i = 0; i < repetitions; i++){
+			x.uniformRandomise();
+			y.uniformRandomise();
+			System.out.println(x + " " + y);
+			
+			ArrayList<BitString> bs = GeneticAlgorithm.kPointCrossover(x, y, k);
+			for(BitString b : bs){
+				System.out.print(b + " ");
+			}
+			System.out.println();
+			System.out.println();
 		}
 	}
 
@@ -81,11 +107,16 @@ public class Main {
 	}
 
 	private static void ex3(String wdimacs, int time_budget, int repetitions) {
-		
+
 		try {
-			for(int i = 0; i < repetitions; i++){
-				MaxSatInstance maxstat = new MaxSatInstance(wdimacs);
-				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(maxstat.variableCount(), 0.5, 4, 100, 10000, System.out, maxstat);}
+			for (int i = 0; i < repetitions; i++) {
+				MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
+				if (i == 0)
+					System.out.println("Total clauses: " + maxsat.clauseCount());
+
+				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(maxsat.variableCount(), 0.5, 4, 1000, Integer.MAX_VALUE,
+						System.out, maxsat, time_budget);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
