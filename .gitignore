@@ -23,5 +23,6 @@ hs_err_pid*
 .Rproj.user
 
 # Docker folder
-docker/*/*/
-!docker/*/Dockerfile
+docker/*/*
+!Dockerfile
+!*.sh
