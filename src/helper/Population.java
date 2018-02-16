@@ -6,13 +6,26 @@ import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
 @SuppressWarnings("serial")
-public class Population extends ArrayList<BitString> {
-
+public class Population extends ArrayList<BitString> {	
+	
+	private MaxSatInstance maxsat;
+	private AlgorithmType algorithm = AlgorithmType.ONE_MAX;
+	
 	public Population() {
+		algorithm = AlgorithmType.ONE_MAX;
+	}
+	
+	public Population(MaxSatInstance maxsat){
+		setMaxSatInstance(maxsat);
 	}
 
 	public Population(String population_str) {
 		addPopulationListStr(population_str);
+	}
+	
+	public void setMaxSatInstance(MaxSatInstance maxsat){
+		this.maxsat = maxsat;
+		this.algorithm = AlgorithmType.MAX_SAT;
 	}
 	
 	public void populateUniformly(int pop_size, int bitstr_length){
@@ -39,11 +52,13 @@ public class Population extends ArrayList<BitString> {
 			int rand = ThreadLocalRandom.current().nextInt(size());
 
 			BitString fighter = get(rand);
-			int oneMax = fighter.oneMax();
-			if (oneMax >= best_fitness) {
-				if (oneMax > best_fitness) {
+			
+			int fitness = getFitness(fighter);
+			
+			if (fitness >= best_fitness) {
+				if (fitness > best_fitness) {
 					best_fighters.clear();
-					best_fitness = oneMax;
+					best_fitness = fitness;
 				}
 
 				best_fighters.add(fighter);
@@ -52,6 +67,17 @@ public class Population extends ArrayList<BitString> {
 		}
 
 		return best_fighters.get(ThreadLocalRandom.current().nextInt(best_fighters.size()));
+	}
+	
+	private int getFitness(BitString fighter){
+		if(algorithm == AlgorithmType.ONE_MAX){
+			return fighter.oneMax();
+		} else if (algorithm == AlgorithmType.MAX_SAT){
+			return maxsat.countClausesSatisfied(fighter);
+		} else {
+			return -1;
+		}
+		
 	}
 
 	/**

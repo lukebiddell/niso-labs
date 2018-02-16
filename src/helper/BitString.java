@@ -1,6 +1,5 @@
 package helper;
 
-
 import java.util.BitSet;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -67,5 +66,16 @@ public class BitString {
 
 	public BitString clone() {
 		return new BitString(this.toString());
+	}
+
+	@Override
+	public boolean equals(Object v) {
+		if (v instanceof BitString) {
+			BitString bs = (BitString) v;
+			return bs.toString().equals(this.toString());
+		} else {
+			return false;
+		}
+
 	}
 }

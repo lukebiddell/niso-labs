@@ -10,8 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GeneticAlgorithm {
 
 	// fitness functions
-	public static final int ONE_MAX = 1;
-	public static final int MAX_SAT = 2;
 
 	public static BitString mutate(BitString bits_x, double chi) {
 		BitString bits = bits_x.clone();
@@ -83,7 +81,7 @@ public class GeneticAlgorithm {
 
 			if (crossoverPoints.contains(i)) {
 				cross = !cross;
-				//System.out.println("Cross: " + i + " " + cross);
+				// System.out.println("Cross: " + i + " " + cross);
 			}
 
 		}
@@ -116,24 +114,8 @@ public class GeneticAlgorithm {
 				BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
 				next_pop.add(new_bitstr);
 
-				int fitness = 0;
+				int fitness = new_bitstr.oneMax();
 
-				switch (fitnessFunction) {
-				case ONE_MAX:
-					fitness = new_bitstr.oneMax();
-					break;
-				case MAX_SAT:
-					try {
-						maxsat = new MaxSatInstance("wcnf/mul_8_3.wcnf");
-						fitness = maxsat.countClausesSatisfied(new_bitstr);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					break;
-				default:
-					break;
-				}
 				if (fitness == n) {
 					found = true; // exit while loop
 					xbest = new_bitstr;
@@ -183,7 +165,7 @@ public class GeneticAlgorithm {
 
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
-		Population pop = new Population();
+		Population pop = new Population(maxsat);
 		pop.populateUniformly(lambda, n);
 		// System.out.println(pop);
 
@@ -192,32 +174,37 @@ public class GeneticAlgorithm {
 		int t = 0;
 		boolean end = false;
 		while (!end && t < max_t) {
-			Population next_pop = new Population();
+			Population next_pop = new Population(maxsat);
 			for (int i = 0; i < lambda; i++) {
 				BitString x = pop.tournament(k);
 				BitString y = pop.tournament(k);
-				//BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
-				//next_pop.add(new_bitstr);
-				//int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
-
-				ArrayList<BitString> new_bitstrs = kPointCrossover(mutate(x, chi), mutate(y, chi), 10);
+				
+				//Uniform Crossover
+				BitString new_bitstr = uniformCrossover(mutate(x, chi),
+				mutate(y, chi));
+				next_pop.add(new_bitstr);
+				int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
+				//
+				
+				//k Point Crossover
+				/*ArrayList<BitString> new_bitstrs = kPointCrossover(mutate(x, chi), mutate(y, chi), 20);
 				next_pop.addAll(new_bitstrs);
 				int nsat0 = maxsat.countClausesSatisfied(new_bitstrs.get(0));
 				int nsat1 = maxsat.countClausesSatisfied(new_bitstrs.get(1));
 				int new_nsat = Integer.max(nsat0, nsat1);
 				BitString new_bitstr;
-				
-				if(nsat0 >= nsat1){
+
+				if (nsat0 >= nsat1) {
 					new_bitstr = new_bitstrs.get(0);
-				} else{
+				} else {
 					new_bitstr = new_bitstrs.get(1);
-				}
+				}*/
+				//
 				
 				if (new_nsat > nsat) {
 					xbest = new_bitstr;
-					nsat = maxsat.countClausesSatisfied(xbest);
-					// System.out.println("New best - " + fbest + " / " +
-					// maxsat.clauseCount());
+					nsat = new_nsat;
+					System.out.println("New best - " + nsat + " / " +maxsat.clauseCount());
 				}
 
 				if (new_nsat >= maxsat.clauseCount() || System.currentTimeMillis() >= endTime) {
