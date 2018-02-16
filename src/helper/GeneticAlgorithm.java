@@ -203,8 +203,11 @@ public class GeneticAlgorithm {
 				if (new_nsat > nsat) {
 					xbest = new_bitstr;
 					nsat = new_nsat;
-					System.out.print(nsat + " ");
+					System.out.println();
+					//System.out.print(nsat + " ");
 				}
+				
+				System.out.print(new_nsat + " ");
 
 				if (new_nsat >= maxsat.clauseCount() || System.currentTimeMillis() >= endTime) {
 					end = true; // exit while loop
