@@ -45,8 +45,8 @@ public class MaxSatInstance {
 				x = Integer.parseInt(values[4]);
 		}
 	}
-	
-	private void loadClauses() throws IOException{
+
+	private void loadClauses() throws IOException {
 		clauses = new LinkedList<Clause>();
 		Clause clause = getNextClause();
 		while (clause != null) {
@@ -54,6 +54,8 @@ public class MaxSatInstance {
 			clause = getNextClause();
 		}
 	}
+
+	//public int allNegatives = 0;
 
 	private Clause getNextClause() throws IOException {
 		String line = br.readLine();
@@ -63,22 +65,28 @@ public class MaxSatInstance {
 
 		if (line == null)
 			return null;
-		else
+		else {
+			/*String[] lits = line.split(" ");
+			for (int i = 1; i < lits.length - 1; i++) {
+				if (!lits[i].startsWith("-")) {
+					return new Clause(line);
+				}
+			}
+			allNegatives++;*/
 			return new Clause(line);
-
+		}
 	}
 
 	public int countClausesSatisfied(BitString assignment) {
 		int count = 0;
 		if (clauses == null) {
 			System.out.println("Clauses empty..");
-			/*clauses = new LinkedList<Clause>();
-			Clause clause = getNextClause();
-			while (clause != null) {
-				clauses.add(clause);
-				count += clause.satisfiedByInt(assignment);
-				clause = getNextClause();
-			}*/
+			/*
+			 * clauses = new LinkedList<Clause>(); Clause clause =
+			 * getNextClause(); while (clause != null) { clauses.add(clause);
+			 * count += clause.satisfiedByInt(assignment); clause =
+			 * getNextClause(); }
+			 */
 		} else {
 			for (Clause clause : clauses) {
 				count += clause.satisfiedByInt(assignment);
@@ -87,12 +95,12 @@ public class MaxSatInstance {
 		return count;
 
 	}
-	
-	public int clauseCount(){
+
+	public int clauseCount() {
 		return m;
 	}
-	
-	public int variableCount(){
+
+	public int variableCount() {
 		return n;
 	}
 

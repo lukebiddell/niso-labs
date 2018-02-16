@@ -168,7 +168,6 @@ public class GeneticAlgorithm {
 		Population pop = new Population(maxsat);
 		pop.populateUniformly(lambda, n);
 		// System.out.println(pop);
-
 		BitString xbest = new BitString(n);
 		int nsat = Integer.MIN_VALUE;
 		int t = 0;
@@ -204,7 +203,7 @@ public class GeneticAlgorithm {
 				if (new_nsat > nsat) {
 					xbest = new_bitstr;
 					nsat = new_nsat;
-					System.out.println("New best - " + nsat + " / " +maxsat.clauseCount());
+					System.out.print(nsat + " ");
 				}
 
 				if (new_nsat >= maxsat.clauseCount() || System.currentTimeMillis() >= endTime) {
@@ -217,7 +216,7 @@ public class GeneticAlgorithm {
 
 			t++;
 		}
-
+		System.out.println();
 		StringBuilder sb = new StringBuilder();
 		sb.append(t * lambda);
 		sb.append("\t");

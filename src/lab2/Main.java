@@ -112,6 +112,7 @@ public class Main {
 			for (int i = 0; i < repetitions; i++) {
 				MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
 				if (i == 0)
+					//System.out.println("All negatives: " + maxsat.allNegatives);
 					System.out.println("Total clauses: " + maxsat.clauseCount());
 
 				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(maxsat.variableCount(), 0.5, 2, 1000, Integer.MAX_VALUE,
