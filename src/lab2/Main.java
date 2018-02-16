@@ -115,7 +115,7 @@ public class Main {
 					//System.out.println("All negatives: " + maxsat.allNegatives);
 					System.out.println("Total clauses: " + maxsat.clauseCount());
 
-				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(maxsat.variableCount(), 0.5, 2, 1000, Integer.MAX_VALUE,
+				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(maxsat.variableCount(), 0.5, 2, 100, Integer.MAX_VALUE,
 						System.out, maxsat, time_budget);
 			}
 		} catch (IOException e) {
