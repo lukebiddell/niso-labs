@@ -104,8 +104,18 @@ public class GeneticAlgorithm {
 			values.add(null);
 		}
 		LinkedList<Clause> clauses = maxsat.getClauses();
-
+		int clauses_processed = 0;
+		int percent = clauses.size() / 100;
 		for (Clause clause : clauses) {
+			
+			
+			
+			if(clauses_processed % percent == 0)
+				System.out.print("|");
+			
+			clauses_processed++;
+
+			
 			if (clause.satisfiedByBool(bits_x) && clause.satisfiedByBool(bits_y)) {
 				for (Literal i : clause.getLiterals()) {
 					int indice = i.getIndice();
@@ -129,7 +139,6 @@ public class GeneticAlgorithm {
 						} else {
 							values.add(indice, false);
 						}
-						//System.out.println("Adding imp");
 
 					}
 				}
@@ -148,6 +157,8 @@ public class GeneticAlgorithm {
 			bs.getBitSet().set(i, value);
 		}
 
+		System.out.println();
+		
 		return bs;
 
 	}
@@ -242,6 +253,7 @@ public class GeneticAlgorithm {
 				// Biased Crossover
 
 				BitString new_bitstr = biasedCrossover(mutate(x, chi), mutate(y, chi), maxsat);
+				System.out.println("Finished crossover");
 				next_pop.add(new_bitstr);
 				int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
 
