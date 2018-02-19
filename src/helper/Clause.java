@@ -6,17 +6,21 @@ import javax.naming.directory.InvalidAttributeValueException;
 public class Clause {
 
 	private LinkedList<Literal> literals;
-	private float weight;
+	//private float weight;
 
 	public Clause(String clause_str) {
 		// TODO Auto-generated constructor stub
 		fromString(clause_str);
 	}
+	
+	public LinkedList<Literal> getLiterals(){
+		return literals;
+	}
 
 	private void fromString(String clause_str) {
 		String[] values = clause_str.split(" ");
 
-		weight = Float.parseFloat(values[0]);
+		//weight = Float.parseFloat(values[0]);
 		literals = new LinkedList<Literal>();
 
 		for (int i = 1; i < values.length; i++) {
@@ -34,7 +38,7 @@ public class Clause {
 
 	}
 
-	private boolean satisfiedByBool(BitString assignment) {
+	public boolean satisfiedByBool(BitString assignment) {
 		for (Literal literal : literals) {
 			if (literal.satisfiedBy(assignment)) {
 				return true;
@@ -49,4 +53,5 @@ public class Clause {
 		else
 			return 0;
 	}
+	
 }

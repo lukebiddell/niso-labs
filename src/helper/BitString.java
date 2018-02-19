@@ -12,7 +12,7 @@ public class BitString {
 
 	public BitString(int length) {
 		this.length = length;
-		bitset = new BitSet(5);
+		bitset = new BitSet(length);
 	}
 
 	public BitString(String bits) {
@@ -40,6 +40,10 @@ public class BitString {
 		
 		return bs;
 
+	}
+	
+	public void flip(){
+		bitset.flip(0, length);
 	}
 
 	public int oneMax() {
@@ -82,7 +86,9 @@ public class BitString {
 	}
 
 	public BitString clone() {
-		return new BitString(this.toString());
+		BitString bs = new BitString(length);
+		bs.bitset = (BitSet) bitset.clone();
+		return bs;
 	}
 
 	@Override

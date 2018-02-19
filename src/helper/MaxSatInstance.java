@@ -55,7 +55,7 @@ public class MaxSatInstance {
 		}
 	}
 
-	//public int allNegatives = 0;
+	// public int allNegatives = 0;
 
 	private Clause getNextClause() throws IOException {
 		String line = br.readLine();
@@ -66,13 +66,11 @@ public class MaxSatInstance {
 		if (line == null)
 			return null;
 		else {
-			/*String[] lits = line.split(" ");
-			for (int i = 1; i < lits.length - 1; i++) {
-				if (!lits[i].startsWith("-")) {
-					return new Clause(line);
-				}
-			}
-			allNegatives++;*/
+			/*
+			 * String[] lits = line.split(" "); for (int i = 1; i < lits.length
+			 * - 1; i++) { if (!lits[i].startsWith("-")) { return new
+			 * Clause(line); } } allNegatives++;
+			 */
 			return new Clause(line);
 		}
 	}
@@ -102,6 +100,15 @@ public class MaxSatInstance {
 
 	public int variableCount() {
 		return n;
+	}
+
+	public LinkedList<Clause> getClauses() {
+		return clauses;
+	}
+	
+	public int imp(int indice, boolean positive, BitString bs){
+		bs.getBitSet().set(indice, !positive);
+		return countClausesSatisfied(bs) * 2 - clauseCount();
 	}
 
 }
