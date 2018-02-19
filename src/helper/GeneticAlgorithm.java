@@ -100,7 +100,9 @@ public class GeneticAlgorithm {
 		// System.out.println("n: " + n);
 
 		ArrayList<Boolean> values = new ArrayList<Boolean>(n);
-		values.add(null);
+		for(int i = 0; i < n; i++){
+			values.add(null);
+		}
 		LinkedList<Clause> clauses = maxsat.getClauses();
 
 		for (Clause clause : clauses) {
@@ -111,7 +113,7 @@ public class GeneticAlgorithm {
 					if (values.get(indice) == null) {
 						if (positive == bits_x.getBitSet().get(indice) && positive == bits_y.getBitSet().get(indice)) {
 							values.add(indice, positive);
-							System.out.println("Adding variable");
+							//System.out.println("Adding variable");
 						}
 					}
 				}
@@ -127,7 +129,7 @@ public class GeneticAlgorithm {
 						} else {
 							values.add(indice, false);
 						}
-						System.out.println("Adding imp");
+						//System.out.println("Adding imp");
 
 					}
 				}
@@ -140,7 +142,7 @@ public class GeneticAlgorithm {
 			Boolean value = values.get(i);
 			if (value == null) {
 				value = ThreadLocalRandom.current().nextBoolean();
-				System.out.println("Adding random");
+				//System.out.println("Adding random");
 
 			}
 			bs.getBitSet().set(i, value);
