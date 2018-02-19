@@ -205,7 +205,7 @@ public class GeneticAlgorithm {
 					nsat = new_nsat;
 					//System.out.println();
 
-					System.out.println(nsat + " ");
+					System.out.println(nsat + " (" + (maxsat.clauseCount() - nsat) + ")");
 				}
 				
 				//System.out.print(new_nsat + " ");
