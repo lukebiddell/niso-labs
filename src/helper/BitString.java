@@ -1,7 +1,10 @@
 package helper;
 
 import java.util.BitSet;
+import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
+
+import javax.naming.directory.InvalidAttributeValueException;
 
 public class BitString {
 	private int length;
@@ -23,6 +26,20 @@ public class BitString {
 			if (ThreadLocalRandom.current().nextBoolean())
 				bitset.set(i);
 		}
+	}
+
+	public static BitString fromClauseForm(String clauseform) {
+
+		String[] values = clauseform.split(" ");
+
+		BitString bs = new BitString(values.length);
+
+		for (int i = 0; i < values.length; i++) {
+			bs.getBitSet().set(i, Integer.parseInt(values[i]) > 0);
+		}
+		
+		return bs;
+
 	}
 
 	public int oneMax() {
