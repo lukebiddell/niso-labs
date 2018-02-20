@@ -132,7 +132,7 @@ public class Main {
 				if (i == 0) {
 					// System.out.println("All negatives: " +
 					// maxsat.allNegatives);
-					System.out.println("Total clauses: " + maxsat.clauseCount());
+					//System.out.println("Total clauses: " + maxsat.clauseCount());
 				}
 
 				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, System.out, maxsat, time_budget);

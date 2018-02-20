@@ -100,22 +100,18 @@ public class GeneticAlgorithm {
 		// System.out.println("n: " + n);
 
 		ArrayList<Boolean> values = new ArrayList<Boolean>(n);
-		for(int i = 0; i < n; i++){
+		for (int i = 0; i < n; i++) {
 			values.add(null);
 		}
 		LinkedList<Clause> clauses = maxsat.getClauses();
-		int clauses_processed = 0;
-		int percent = clauses.size() / 100;
+		// int clauses_processed = 0;
+		// int percent = clauses.size() / 100;
 		for (Clause clause : clauses) {
-			
-			
-			
-			if(clauses_processed % percent == 0)
-				System.out.print("|");
-			
-			clauses_processed++;
 
-			
+			// if(clauses_processed % percent == 0) System.out.print("|");
+
+			// clauses_processed++;
+
 			if (clause.satisfiedByBool(bits_x) && clause.satisfiedByBool(bits_y)) {
 				for (Literal i : clause.getLiterals()) {
 					int indice = i.getIndice();
@@ -123,7 +119,7 @@ public class GeneticAlgorithm {
 					if (values.get(indice) == null) {
 						if (positive == bits_x.getBitSet().get(indice) && positive == bits_y.getBitSet().get(indice)) {
 							values.add(indice, positive);
-							//System.out.println("Adding variable");
+							// System.out.println("Adding variable");
 						}
 					}
 				}
@@ -151,14 +147,14 @@ public class GeneticAlgorithm {
 			Boolean value = values.get(i);
 			if (value == null) {
 				value = ThreadLocalRandom.current().nextBoolean();
-				//System.out.println("Adding random");
+				// System.out.println("Adding random");
 
 			}
 			bs.getBitSet().set(i, value);
 		}
 
-		System.out.println();
-		
+		// System.out.println();
+
 		return bs;
 
 	}
@@ -249,20 +245,16 @@ public class GeneticAlgorithm {
 			for (int i = 0; i < lambda; i++) {
 				BitString x = pop.tournament(k);
 				BitString y = pop.tournament(k);
-
+				
 				// Biased Crossover
-
-				BitString new_bitstr = biasedCrossover(mutate(x, chi), mutate(y, chi), maxsat);
-				System.out.println("Finished crossover");
+				//BitString new_bitstr = biasedCrossover(mutate(x, chi), mutate(y, chi), maxsat);
+				
+				// Uniform Crossover
+				BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
+				
 				next_pop.add(new_bitstr);
 				int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
 
-				// Uniform Crossover
-				/*
-				 * BitString new_bitstr = uniformCrossover(mutate(x, chi),
-				 * mutate(y, chi)); next_pop.add(new_bitstr); int new_nsat =
-				 * maxsat.countClausesSatisfied(new_bitstr);
-				 */
 				//
 
 				// k Point Crossover
@@ -283,7 +275,7 @@ public class GeneticAlgorithm {
 					nsat = new_nsat;
 					// System.out.println();
 
-					System.out.println(nsat + " (" + (maxsat.clauseCount() - nsat) + ")");
+					//System.out.println(nsat + " (" + (maxsat.clauseCount() - nsat) + ")");
 				}
 
 				// System.out.print(new_nsat + " ");
@@ -298,13 +290,13 @@ public class GeneticAlgorithm {
 
 			t++;
 		}
-		System.out.println();
+		//System.out.println();
 		StringBuilder sb = new StringBuilder();
 		sb.append(t * lambda);
 		sb.append("\t");
 		sb.append(nsat);
 		sb.append("\t");
-		// sb.append(xbest);
+		sb.append(xbest);
 
 		System.out.println(sb);
 		if (out != null && out != System.out) {
