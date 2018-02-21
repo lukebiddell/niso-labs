@@ -3,11 +3,15 @@ package helper;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.BitSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class MaxSatInstance {
 
 	private int n, m, x;
+
+	private HashMap<BitSet, Integer> fitnessCache = new HashMap<BitSet, Integer>();
 
 	private LinkedList<Clause> clauses;
 
@@ -76,20 +80,15 @@ public class MaxSatInstance {
 	}
 
 	public int countClausesSatisfied(BitString assignment) {
-		int count = 0;
-		if (clauses == null) {
-			System.out.println("Clauses empty..");
-			/*
-			 * clauses = new LinkedList<Clause>(); Clause clause =
-			 * getNextClause(); while (clause != null) { clauses.add(clause);
-			 * count += clause.satisfiedByInt(assignment); clause =
-			 * getNextClause(); }
-			 */
-		} else {
-			for (Clause clause : clauses) {
+		Integer count = fitnessCache.get(assignment.getBitSet());
+
+		if (count == null) {
+			count = 0;
+			for (Clause clause : clauses)
 				count += clause.satisfiedByInt(assignment);
-			}
+			fitnessCache.put(assignment.getBitSet(), count);
 		}
+
 		return count;
 
 	}
@@ -105,8 +104,8 @@ public class MaxSatInstance {
 	public LinkedList<Clause> getClauses() {
 		return clauses;
 	}
-	
-	public int imp(int indice, boolean positive, BitString bs){
+
+	public int imp(int indice, boolean positive, BitString bs) {
 		bs.getBitSet().set(indice, !positive);
 		return countClausesSatisfied(bs) * 2 - clauseCount();
 	}
