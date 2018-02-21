@@ -241,17 +241,19 @@ public class GeneticAlgorithm {
 		boolean end = false;
 
 		while (!end && t < max_t) {
+			// System.out.println("Generation: " + t);
 			Population next_pop = new Population(maxsat);
 			for (int i = 0; i < lambda; i++) {
 				BitString x = pop.tournament(k);
 				BitString y = pop.tournament(k);
-				
+
 				// Biased Crossover
-				//BitString new_bitstr = biasedCrossover(mutate(x, chi), mutate(y, chi), maxsat);
-				
+				// BitString new_bitstr = biasedCrossover(mutate(x, chi),
+				// mutate(y, chi), maxsat);
+
 				// Uniform Crossover
 				BitString new_bitstr = uniformCrossover(mutate(x, chi), mutate(y, chi));
-				
+
 				next_pop.add(new_bitstr);
 				int new_nsat = maxsat.countClausesSatisfied(new_bitstr);
 
@@ -275,7 +277,8 @@ public class GeneticAlgorithm {
 					nsat = new_nsat;
 					// System.out.println();
 
-					//System.out.println(nsat + " (" + (maxsat.clauseCount() - nsat) + ")");
+					// System.out.println(nsat + " (" + (maxsat.clauseCount() -
+					// nsat) + ")");
 				}
 
 				// System.out.print(new_nsat + " ");
@@ -290,7 +293,7 @@ public class GeneticAlgorithm {
 
 			t++;
 		}
-		//System.out.println();
+		// System.out.println();
 		StringBuilder sb = new StringBuilder();
 		sb.append(t * lambda);
 		sb.append("\t");
@@ -301,6 +304,26 @@ public class GeneticAlgorithm {
 		System.out.println(sb);
 		if (out != null && out != System.out) {
 			out.println(sb);
+		}
+
+	}
+
+	public static void wsatAlgorithm(double chi, int k, int lambda, int max_t, PrintStream out, MaxSatInstance maxsat,
+			int time_budget) {
+
+		int max_steps = max_t;
+		double prob_noise = 0.5;
+		int n = maxsat.variableCount();
+
+		BitString best_ind = BitString.random(n);
+
+		boolean stop_condition = false;
+
+		while (!stop_condition) {
+			BitString ind = BitString.random(n);
+			for (int steps = 0; steps < max_steps; steps++) {
+
+			}
 		}
 	}
 }

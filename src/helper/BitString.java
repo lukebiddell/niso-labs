@@ -28,8 +28,13 @@ public class BitString {
 		}
 	}
 
-	public static BitString fromClauseForm(String clauseform) {
+	public static BitString random(int length) {
+		BitString bs = new BitString(length);
+		bs.uniformRandomise();
+		return bs;
+	}
 
+	public static BitString fromClauseForm(String clauseform) {
 		String[] values = clauseform.split(" ");
 
 		BitString bs = new BitString(values.length);
@@ -37,12 +42,12 @@ public class BitString {
 		for (int i = 0; i < values.length; i++) {
 			bs.getBitSet().set(i, Integer.parseInt(values[i]) > 0);
 		}
-		
+
 		return bs;
 
 	}
-	
-	public void flip(){
+
+	public void flip() {
 		bitset.flip(0, length);
 	}
 
