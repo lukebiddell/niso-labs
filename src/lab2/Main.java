@@ -158,7 +158,7 @@ public class Main {
 			int lambda;
 			int max_t = Integer.MAX_VALUE;
 			int k;
-			int time_budget = 10;
+			int time_budget = 120;
 			
 			int v = ThreadLocalRandom.current().nextInt(100000, 1000000);
 
@@ -173,9 +173,9 @@ public class Main {
 				
 				
 				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_mutationrate_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
 				
-				chi = 0.125;
+				chi = 0.2;
 				lambda = 50;
 				k = 2;
 				while (chi < 3) {
@@ -184,14 +184,14 @@ public class Main {
 						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget, true);
 					}
 
-					chi += 0.125;
+					chi += 0.2;
 				}
 				out.close();
 				
 				
 				
 				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_populationsize_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
 				
 				chi = 1;
 				lambda = 10;
@@ -203,7 +203,7 @@ public class Main {
 
 					}
 
-					lambda += 25;
+					lambda += 40;
 				}
 
 				out.close();
@@ -212,7 +212,7 @@ public class Main {
 				
 				
 				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_tournamentsize_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
 				
 				chi = 1;
 				lambda = 50;

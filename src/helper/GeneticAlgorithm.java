@@ -311,7 +311,8 @@ public class GeneticAlgorithm {
 			sb.append(lambda);
 			sb.append("\t");
 			sb.append(k);
-
+			sb.append("\t");
+			sb.append(time_budget);
 		}
 
 		System.out.println(sb);
