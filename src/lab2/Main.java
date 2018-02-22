@@ -4,14 +4,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
 import helper.BitString;
 import helper.Clause;
 import helper.GeneticAlgorithm;
 import helper.MaxSatInstance;
-import helper.Population;
 
 public class Main {
 
@@ -133,10 +135,11 @@ public class Main {
 				if (i == 0) {
 					// System.out.println("All negatives: " +
 					// maxsat.allNegatives);
-					//System.out.println("Total clauses: " + maxsat.clauseCount());
+					// System.out.println("Total clauses: " +
+					// maxsat.clauseCount());
 				}
 
-				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, System.out, maxsat, time_budget);
+				GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, System.out, maxsat, time_budget, false);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -149,53 +152,90 @@ public class Main {
 
 	private static void ex6() {
 		try {
-			/*
-			 * PrintStream out = new PrintStream(new
-			 * FileOutputStream("logs/runtime_vs_mutationrate.txt"));
-			 * 
-			 * double chi = 0.125; while (chi < 3) { for (int i = 0; i < 100;
-			 * i++) { simpleGeneticAlgorithm(200, chi, 2, 100, 20000, out); }
-			 * 
-			 * chi += 0.125; } out.close();
-			 * 
-			 * 
-			 * out = new PrintStream(new
-			 * FileOutputStream("logs/runtime_vs_problemsize.txt")); int n = 15;
-			 * while (n < 200) { for (int i = 0; i < 100; i++) {
-			 * simpleGeneticAlgorithm(n, 0.6, 2, 100, 20000, out); }
-			 * 
-			 * n += 5; } out.close();
-			 * 
-			 * 
-			 * out = new PrintStream(new
-			 * FileOutputStream("logs/runtime_vs_populationsize.txt"));
-			 * 
-			 * int lambda = 10; while (lambda <= 1000) { for (int i = 0; i <
-			 * 100; i++) { simpleGeneticAlgorithm(200, 0.6, 2, lambda, 20000,
-			 * out); }
-			 * 
-			 * lambda += 25; }
-			 * 
-			 * out.close();
-			 */
+			PrintStream out;
+			LinkedList<String> wdimacsList = new LinkedList<String>();
+			double chi;
+			int lambda;
+			int max_t = Integer.MAX_VALUE;
+			int k;
+			int time_budget = 10;
+			
+			int v = ThreadLocalRandom.current().nextInt(100000, 1000000);
 
-			PrintStream out = new PrintStream(new FileOutputStream("logs/runtime_vs_tournamentsizen.txt"));
+			wdimacsList.add("wcnf/3col80_5_6.shuffled.cnf.wcnf");
+			wdimacsList.add("wcnf/SAT11__application__fuhs__AProVE11__AProVE11-09.cnf.wcnf.10.wcnf");
 
-			int k = 2;
-			while (k <= 5) {
-				for (int i = 0; i < 100; i++) {
-					GeneticAlgorithm.simpleGeneticAlgorithm(200, 0.6, k, 100, 20000, out, 2);
+			
+			
+			for (String wdimacs : wdimacsList) {
+				Files.createDirectories(Paths.get("logs/lab2/" + wdimacs));
+
+				
+				
+				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_mutationrate_" + v + ".tsv"));
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				
+				chi = 0.125;
+				lambda = 50;
+				k = 2;
+				while (chi < 3) {
+					for (int i = 0; i < 100; i++) {
+						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
+						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget, true);
+					}
+
+					chi += 0.125;
+				}
+				out.close();
+				
+				
+				
+				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_populationsize_" + v + ".tsv"));
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				
+				chi = 1;
+				lambda = 10;
+				k = 2;
+				while (lambda <= 1000) {
+					for (int i = 0; i < 100; i++) {
+						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
+						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget, true);
+
+					}
+
+					lambda += 25;
 				}
 
-				k += 1;
-			}
+				out.close();
 
-			out.close();
+				
+				
+				
+				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_tournamentsize_" + v + ".tsv"));
+				out.println("t\tnsat\tm\tn\tchi\tlambda\tk");
+				
+				chi = 1;
+				lambda = 50;
+				k = 2;
+				while (k <= 5) {
+					for (int i = 0; i < 100; i++) {
+						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
+						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget, true);
+					}
+
+					k += 1;
+				}
+
+				out.close();
+			}
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.err.println("File not found");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

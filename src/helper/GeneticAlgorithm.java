@@ -227,7 +227,7 @@ public class GeneticAlgorithm {
 	 */
 
 	public static void simpleGeneticAlgorithmMaxSat(double chi, int k, int lambda, int max_t, PrintStream out,
-			MaxSatInstance maxsat, int time_budget) {
+			MaxSatInstance maxsat, int time_budget, boolean logOutput) {
 		int n = maxsat.variableCount();
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
@@ -299,7 +299,20 @@ public class GeneticAlgorithm {
 		sb.append("\t");
 		sb.append(nsat);
 		sb.append("\t");
-		sb.append(xbest);
+		if (!logOutput) {
+			sb.append(xbest);
+		} else {
+			sb.append(maxsat.clauseCount());
+			sb.append("\t");
+			sb.append(n);
+			sb.append("\t");
+			sb.append(chi);
+			sb.append("\t");
+			sb.append(lambda);
+			sb.append("\t");
+			sb.append(k);
+
+		}
 
 		System.out.println(sb);
 		if (out != null && out != System.out) {
