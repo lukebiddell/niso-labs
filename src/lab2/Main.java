@@ -164,7 +164,7 @@ public class Main {
 
 			wdimacsList.add("wcnf/3col80_5_6.shuffled.cnf.wcnf");
 			wdimacsList.add("wcnf/SAT11__application__fuhs__AProVE11__AProVE11-09.cnf.wcnf.10.wcnf");
-
+			wdimacsList.add("wcnf/teams24_l4a.cnf.wcnf");
 			
 			
 			for (String wdimacs : wdimacsList) {
@@ -175,7 +175,7 @@ public class Main {
 				out = new PrintStream(new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_mutationrate_" + v + ".tsv"));
 				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
 				
-				chi = 0.2;
+				chi = 0.1;
 				lambda = 50;
 				k = 2;
 				while (chi < 3) {
@@ -184,7 +184,7 @@ public class Main {
 						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget, true);
 					}
 
-					chi += 0.2;
+					chi += 0.3;
 				}
 				out.close();
 				
@@ -203,7 +203,7 @@ public class Main {
 
 					}
 
-					lambda += 40;
+					lambda += 100;
 				}
 
 				out.close();
@@ -227,6 +227,8 @@ public class Main {
 				}
 
 				out.close();
+				
+				System.out.println("Logs completed");
 			}
 
 		} catch (FileNotFoundException e) {
