@@ -158,7 +158,7 @@ public class Main {
 			int lambda;
 			int max_t = Integer.MAX_VALUE;
 			int k;
-			int time_budget = 120;
+			int time_budget = 5;
 			
 			int v = ThreadLocalRandom.current().nextInt(100000, 1000000);
 
