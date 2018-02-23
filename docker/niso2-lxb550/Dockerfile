@@ -1,7 +1,5 @@
 FROM pklehre/niso-lab2
 #
-#
-ADD bin /bin
 ADD src /src
 #
 RUN apt-get update
