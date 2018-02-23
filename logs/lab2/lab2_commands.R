@@ -22,10 +22,20 @@ dev.print(device = png, filename = 'nsat_vs_tournamentsize_3col80.png', width = 
 
 #SAT11
 boxplot(nsat~chi, data=nsat_vs_mutationrate_SAT11, main="Satisfied Clauses vs Mutation Rate", xlab="Mutation Rate", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_mutationrate_SAT11.png', width = 600, height = 600)
+
 boxplot(nsat~lambda, data=nsat_vs_populationsize_SAT11, main="Satisfied Clauses vs Population Size", xlab="Population Size", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_populationsize_SAT11.png', width = 600, height = 600)
+
 boxplot(nsat~k, data=nsat_vs_tournamentsize_SAT11, main="Satisfied Clauses vs Tournament Size", xlab="Tournament Size", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_tournamentsize_SAT11.png', width = 600, height = 600)
 
 #teams24
 boxplot(nsat~chi, data=nsat_vs_mutationrate_teams24, main="Satisfied Clauses vs Mutation Rate", xlab="Mutation Rate", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_mutationrate_teams24.png', width = 600, height = 600)
+
 boxplot(nsat~lambda, data=nsat_vs_populationsize_teams24, main="Satisfied Clauses vs Population Size", xlab="Population Size", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_populationsize_teams24.png', width = 600, height = 600)
+
 boxplot(nsat~k, data=nsat_vs_tournamentsize_teams24, main="Satisfied Clauses vs Tournament Size", xlab="Tournament Size", ylab="Satisfied Clauses")
+dev.print(device = png, filename = 'nsat_vs_tournamentsize_teams24.png', width = 600, height = 600)
