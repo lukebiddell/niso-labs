@@ -1,12 +1,8 @@
 package helper;
 
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
@@ -159,10 +155,8 @@ public class GeneticAlgorithm {
 
 	}
 
-	// TODO: Add error checking for requirements
 	public static void simpleGeneticAlgorithm(int n, double chi, int k, int lambda, int max_t, PrintStream out,
 			int fitnessFunction) {
-		MaxSatInstance maxsat;
 
 		Population pop = new Population();
 		pop.populateUniformly(lambda, n);
@@ -320,24 +314,5 @@ public class GeneticAlgorithm {
 			out.println(sb);
 		}
 
-	}
-
-	public static void wsatAlgorithm(double chi, int k, int lambda, int max_t, PrintStream out, MaxSatInstance maxsat,
-			int time_budget) {
-
-		int max_steps = max_t;
-		double prob_noise = 0.5;
-		int n = maxsat.variableCount();
-
-		BitString best_ind = BitString.random(n);
-
-		boolean stop_condition = false;
-
-		while (!stop_condition) {
-			BitString ind = BitString.random(n);
-			for (int steps = 0; steps < max_steps; steps++) {
-
-			}
-		}
 	}
 }

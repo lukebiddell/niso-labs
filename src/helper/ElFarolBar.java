@@ -23,6 +23,10 @@ public class ElFarolBar {
 		return -1;
 	}
 	
+	public static Boolean singleSampler(double prob) {
+		return ThreadLocalRandom.current().nextDouble() < prob ? true : false;
+	}
+	
 	public static double[] probsFromString(String probs_str){
 		String[] probs_str_arr = probs_str.split(" ");
 		int length = probs_str_arr.length;

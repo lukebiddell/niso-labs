@@ -1,23 +1,25 @@
 package helper;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public final class Strategy {
 
-	int h;
-	State[] states;
+	private final int h;
+	private final State[] states;
 
 	public Strategy(String strat_str) {
-		
+
 		String[] strat = strat_str.split(" ");
 
 		int p = 0;
 
 		h = Integer.parseInt(strat[p]);
-		
+
 		states = new State[h];
 
 		for (int s = 0; s < h; s++) {
 			p++;
-			
+
 			double probability = Double.parseDouble(strat[p]);
 
 			double[] crowdedSTM = new double[h];
@@ -38,10 +40,21 @@ public final class Strategy {
 
 	}
 
+	public String simulateStep(int state_no, boolean crowded, int repetitions) {
+		int s = getState(state_no).simulateStep(crowded);
+		int d = ThreadLocalRandom.current().nextDouble() < getState(s).getProbability() ? 1 : 0;
+
+		return d + "\t" + s;
+	}
+
+	public State getState(int s) {
+		return states[s];
+	}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(h);
-		for(State state : states){
+		for (State state : states) {
 			sb.append(" ");
 			sb.append(state);
 		}

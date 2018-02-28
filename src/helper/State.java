@@ -1,5 +1,7 @@
 package helper;
 
+import java.util.Properties;
+
 public final class State {
 
 	private int stateNumber;
@@ -9,7 +11,7 @@ public final class State {
 	private double[] crowdedSTM;
 	private double[] uncrowdedSTM;
 
-	public State(int h, String[] state_str) {
+	private State(int h, String[] state_str) {
 		int p = 0;
 
 		probability = Double.parseDouble(state_str[p]);
@@ -45,6 +47,17 @@ public final class State {
 		}
 		
 		return sb.toString();
+	}
+	
+	public int simulateStep(boolean crowded){
+		if(crowded)
+			return ElFarolBar.distributionSampler(crowdedSTM);
+		else
+			return ElFarolBar.distributionSampler(uncrowdedSTM);
+	}
+	
+	public double getProbability(){
+		return probability;
 	}
 
 }

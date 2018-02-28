@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import helper.BitString;
 import helper.ElFarolBar;
 import helper.GeneticAlgorithm;
 import helper.MaxSatInstance;
@@ -85,7 +83,7 @@ public class Main {
 	}
 
 	private static void test() {
-		
+
 	}
 
 	private static void ex1(String prob_str, int repetitions) {
@@ -97,7 +95,13 @@ public class Main {
 
 	private static void ex2(String strategy_str, int state, int crowded_int, int repetitions) {
 		Strategy strat = new Strategy(strategy_str);
-		System.out.println(strat);
+
+		boolean crowded = crowded_int > 0 ? true : false;
+
+		for (int i = 0; i < repetitions; i++) {
+			System.out.println(strat.simulateStep(state, crowded, repetitions));
+		}
+
 	}
 
 	private static void ex3(int lambda, int h, int weeks, int time_budget) {
