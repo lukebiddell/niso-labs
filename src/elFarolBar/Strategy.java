@@ -1,4 +1,4 @@
-package helper;
+package elFarolBar;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -39,6 +39,21 @@ public final class Strategy {
 		}
 
 	}
+	
+	public Strategy mutate() {
+		//TODO
+		return null;
+	}
+	
+	public static Strategy discreteRecombination(Strategy mother, Strategy father) {
+		//TODO
+		return null;
+	}
+	
+	public int payoff() {
+		//TODO
+		return 0;
+	}
 
 	public String simulateStep(int state_no, boolean crowded, int repetitions) {
 		int s = getState(state_no).simulateStep(crowded);
@@ -60,5 +75,7 @@ public final class Strategy {
 		}
 		return sb.toString();
 	}
+	
+	
 
 }

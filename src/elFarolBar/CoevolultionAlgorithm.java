@@ -1,6 +1,10 @@
-package helper;
+package elFarolBar;
 
 import java.io.PrintStream;
+
+import helper.BitString;
+import helper.GeneticAlgorithm;
+import helper.Population;
 
 public class CoevolultionAlgorithm extends GeneticAlgorithm {
 

@@ -9,10 +9,10 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
-import helper.ElFarolBar;
+import elFarolBar.ElFarolBar;
+import elFarolBar.Strategy;
 import helper.GeneticAlgorithm;
 import helper.MaxSatInstance;
-import helper.Strategy;
 
 public class Main {
 

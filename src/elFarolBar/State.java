@@ -1,4 +1,4 @@
-package helper;
+package elFarolBar;
 
 import java.util.Properties;
 
