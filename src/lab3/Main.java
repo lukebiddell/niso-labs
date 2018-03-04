@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import elFarolBar.CoevolutionAlgorithm;
 import elFarolBar.ElFarolBar;
+import elFarolBar.State;
 import elFarolBar.Strategy;
+import elFarolBar.StrategyPopulation;
 import helper.GeneticAlgorithm;
 import helper.MaxSatInstance;
 
@@ -83,7 +87,23 @@ public class Main {
 	}
 
 	private static void test() {
-
+		double[] vals = new double[3];
+		vals[0] = 0.88;
+		vals[1] = 0.01;
+		vals[2] = 2.0;
+		
+		double[] norm = ElFarolBar.normalise(vals);
+		
+		System.out.println(Arrays.toString(vals));
+		System.out.println(Arrays.toString(norm));
+		
+		System.out.println(Arrays.toString(ElFarolBar.randomDistribution(5)));
+		
+		System.out.println(State.uniformRandom(1, 4));
+		
+		System.out.println("");
+		StrategyPopulation.uniformRandom(5, 2, 0);
+		
 	}
 
 	private static void ex1(String prob_str, int repetitions) {
@@ -96,16 +116,25 @@ public class Main {
 	private static void ex2(String strategy_str, int state, int crowded_int, int repetitions) {
 		Strategy strat = new Strategy(strategy_str);
 
-		boolean crowded = crowded_int > 0 ? true : false;
-
+		boolean crowded = crowded_int > 0;
+		
 		for (int i = 0; i < repetitions; i++) {
-			System.out.println(strat.simulateStep(state, crowded, repetitions));
+			strat.simulateStep(state, crowded);
+			System.out.println(strat.getSimulatedState() + "\t" + (strat.isSimulatedDecision() ? 1 : 0));
 		}
-
 	}
 
 	private static void ex3(int lambda, int h, int weeks, int time_budget) {
-
+		CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, time_budget);
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("tw\ttg\tb\tc");
+		for(int i = 1; i <= lambda; i++)
+			sb.append("\ta").append(i);
+		System.out.println(sb);
+		
+		alg.startAlgorithm();
 	}
 
 	private static void ex6() {

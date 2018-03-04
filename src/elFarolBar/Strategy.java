@@ -1,11 +1,23 @@
 package elFarolBar;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class Strategy {
 
 	private final int h;
 	private final State[] states;
+
+	private int simulatedState;
+	private boolean simulatedDecision;
+
+	// private int week = 0;
+	private int payoff = 0;
+
+	public Strategy(int h) {
+		this.h = h;
+		this.states = new State[h];
+	}
 
 	public Strategy(String strat_str) {
 
@@ -39,27 +51,61 @@ public final class Strategy {
 		}
 
 	}
-	
+
+	public static Strategy uniformRandom(int h) {
+		Strategy strat = new Strategy(h);
+
+		for (int i = 0; i < h; i++) {
+			strat.states[i] = State.uniformRandom(i, h);
+		}
+
+		// System.out.println(strat);
+
+		return strat;
+	}
+
+	public int getSimulatedState() {
+		return simulatedState;
+	}
+
+	public boolean isSimulatedDecision() {
+		return simulatedDecision;
+	}
+
 	public Strategy mutate() {
-		//TODO
+		// TODO
 		return null;
 	}
-	
-	public static Strategy discreteRecombination(Strategy mother, Strategy father) {
-		//TODO
+
+	public static Strategy globalDiscreteRecombination(Strategy mother, Strategy father) {
+		// TODO
+		
+		Strategy child = new Strategy(mother.h);
+		
+		for(int i = 0; i < child.h; i++){
+			child.states[i] = null; //TODO
+		}
+		
 		return null;
 	}
+
+	public void updatePayoff(boolean crowded) {
+		if (simulatedDecision != crowded)
+			payoff++;
+	}
 	
-	public int payoff() {
-		//TODO
-		return 0;
+	public int getPayoff(){
+		return payoff;
 	}
 
-	public String simulateStep(int state_no, boolean crowded, int repetitions) {
-		int s = getState(state_no).simulateStep(crowded);
-		int d = ThreadLocalRandom.current().nextDouble() < getState(s).getProbability() ? 1 : 0;
+	public void simulateStep(int state_no, boolean crowded) {
+		simulatedState = getState(state_no).simulateStep(crowded);
+		simulatedDecision = ThreadLocalRandom.current().nextDouble() < getState(simulatedState).getProbability();
 
-		return d + "\t" + s;
+	}
+
+	public void simulateStep(boolean crowded) {
+		simulateStep(simulatedState, crowded);
 	}
 
 	public State getState(int s) {
@@ -69,13 +115,8 @@ public final class Strategy {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(h);
-		for (State state : states) {
-			sb.append(" ");
-			sb.append(state);
-		}
+		Arrays.stream(states).forEach(s -> sb.append(" ").append(s));
 		return sb.toString();
 	}
-	
-	
 
 }
