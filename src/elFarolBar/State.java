@@ -47,12 +47,16 @@ public final class State {
 	public static State globalDiscreteRecombination(State mother, State father){
 		int stateNumber = mother.stateNumber;
 		double probability =  ThreadLocalRandom.current().nextBoolean() ? mother.probability : father.probability;
-		for(int i = 0; i < mother.crowdedSTM.length; i++){
-			
+		double[] crowdedSTM = new double[mother.crowdedSTM.length];
+		double[] uncrowdedSTM = new double[mother.uncrowdedSTM.length];
+		
+		
+		for(int i = 0; i < crowdedSTM.length; i++){
+			crowdedSTM[i] = ThreadLocalRandom.current().nextBoolean() ? mother.crowdedSTM[i] : father.crowdedSTM[i];
+			uncrowdedSTM[i] = ThreadLocalRandom.current().nextBoolean() ? mother.uncrowdedSTM[i] : father.uncrowdedSTM[i];
 		}
 		
-		
-		return null;
+		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
 	}
 
 	public String toString() {

@@ -83,7 +83,7 @@ public final class Strategy {
 		Strategy child = new Strategy(mother.h);
 		
 		for(int i = 0; i < child.h; i++){
-			child.states[i] = null; //TODO
+			child.states[i] = State.globalDiscreteRecombination(mother.states[i], father.states[i]); //TODO
 		}
 		
 		return null;
