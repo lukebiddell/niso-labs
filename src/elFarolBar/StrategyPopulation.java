@@ -95,7 +95,7 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		sb.append("\t").append(generation);
 		sb.append("\t").append(individualsInBar);
 		sb.append("\t").append(crowded ? '1' : '0');
-		stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0'));//.append(" ").append(s.getPayoff()));
+		//stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0'));//.append(" ").append(s.getPayoff()));
 		
 		return sb.toString();
 	}

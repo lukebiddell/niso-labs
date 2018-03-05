@@ -26,15 +26,11 @@ public class CoevolutionAlgorithm {
 
 	public void startAlgorithm() {
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
-
-		int generation = 0;
 		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h);
 
 		boolean end = false;
 
 		while (!end) {
-			generation++;
-			
 			for (int week = 0; week < weeks; week++) {
 				pop.simulateStep();
 				out.println(pop);
