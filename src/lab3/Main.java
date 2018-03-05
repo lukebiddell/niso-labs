@@ -102,7 +102,7 @@ public class Main {
 		System.out.println(State.uniformRandom(1, 4));
 		
 		System.out.println("");
-		StrategyPopulation.uniformRandom(5, 2, 0);
+		StrategyPopulation.uniformRandom(5, 2);
 		
 	}
 
@@ -114,7 +114,7 @@ public class Main {
 	}
 
 	private static void ex2(String strategy_str, int state, int crowded_int, int repetitions) {
-		Strategy strat = new Strategy(strategy_str);
+		Strategy strat = Strategy.parseStrategy(strategy_str);
 
 		boolean crowded = crowded_int > 0;
 		

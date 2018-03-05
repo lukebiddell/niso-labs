@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class Strategy {
 
 	private final int h;
-	private final State[] states;
+	private State[] states;
 
 	private int simulatedState;
 	private boolean simulatedDecision;
@@ -19,17 +19,20 @@ public final class Strategy {
 		this.states = new State[h];
 	}
 
-	public Strategy(String strat_str) {
-
+	public static Strategy parseStrategy(String strat_str) {
+		
+		
 		String[] strat = strat_str.split(" ");
 
 		int p = 0;
 
-		h = Integer.parseInt(strat[p]);
+		int h = Integer.parseInt(strat[p]);
 
-		states = new State[h];
+		Strategy s = new Strategy(h);
+		
+		s.states = new State[h];
 
-		for (int s = 0; s < h; s++) {
+		for (int i = 0; i < h; i++) {
 			p++;
 
 			double probability = Double.parseDouble(strat[p]);
@@ -37,18 +40,20 @@ public final class Strategy {
 			double[] crowdedSTM = new double[h];
 			double[] uncrowdedSTM = new double[h];
 
-			for (int i = 0; i < h; i++) {
+			for (int j = 0; j < h; j++) {
 				p++;
-				crowdedSTM[i] = Double.parseDouble(strat[p]);
-				uncrowdedSTM[i] = Double.parseDouble(strat[p + h]);
+				crowdedSTM[j] = Double.parseDouble(strat[p]);
+				uncrowdedSTM[j] = Double.parseDouble(strat[p + h]);
 			}
 
-			states[s] = new State(s, probability, crowdedSTM, uncrowdedSTM);
+			s.states[i] = new State(i, probability, crowdedSTM, uncrowdedSTM);
 
 			p += h;
 
 			assert p < strat.length;
 		}
+		
+		return s;
 
 	}
 
@@ -86,7 +91,7 @@ public final class Strategy {
 			child.states[i] = State.globalDiscreteRecombination(mother.states[i], father.states[i]); //TODO
 		}
 		
-		return null;
+		return child;
 	}
 
 	public void updatePayoff(boolean crowded) {

@@ -10,10 +10,10 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 	private boolean crowded;
 	private int week = 0;
 	private int individualsInBar;
-	private int generation;
+	private int generation = 1;
 	
 
-	public static StrategyPopulation uniformRandom(int lambda, int h, int generation) {
+	public static StrategyPopulation uniformRandom(int lambda, int h) {
 		StrategyPopulation pop = new StrategyPopulation();
 
 		for (int i = 0; i < lambda; i++) {
@@ -21,18 +21,23 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		}
 
 		pop.crowded = false;
-		pop.generation = generation;
 
 		return pop;
 	}
-
+	
 	public StrategyPopulation evolve(int k) {
 		StrategyPopulation pop = new StrategyPopulation();
 
-		Strategy x = tournament(k);
-		Strategy y = tournament(k);
+		for(int i = 0; i < size(); i++){
+			Strategy x = tournament(k);
+			Strategy y = tournament(k);
+			
+			Strategy z = Strategy.globalDiscreteRecombination(x, y);
+			//System.out.println(x);
+			pop.add(z);
+		}
 		
-		Strategy z = Strategy.globalDiscreteRecombination(x, y);
+		pop.generation = ++generation;
 		
 		
 		return pop;
@@ -72,11 +77,11 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		
 		for (Strategy strat : this) {
 			strat.simulateStep(crowded);
-			if (strat.isSimulatedDecision())
-				individualsInBar++;
+			individualsInBar += strat.isSimulatedDecision() ? 1 : 0;
 		}
 		
-		crowded = individualsInBar / size() >= 0.6;
+		
+		crowded = ((double) individualsInBar / (double) size()) >= 0.6;
 		
 		stream().forEach(s -> s.updatePayoff(crowded));
 		
@@ -90,7 +95,7 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		sb.append("\t").append(generation);
 		sb.append("\t").append(individualsInBar);
 		sb.append("\t").append(crowded ? '1' : '0');
-		stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0').append(" ").append(s.getPayoff()));
+		stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0'));//.append(" ").append(s.getPayoff()));
 		
 		return sb.toString();
 	}

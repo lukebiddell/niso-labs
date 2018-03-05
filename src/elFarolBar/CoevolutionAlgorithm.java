@@ -2,12 +2,10 @@ package elFarolBar;
 
 import java.io.PrintStream;
 
-import helper.BitString;
-import helper.GeneticAlgorithm;
-import helper.MaxSatInstance;
-import helper.Population;
+//import helper.GeneticAlgorithm;
+//public class CoevolutionAlgorithm extends GeneticAlgorithm {
 
-public class CoevolutionAlgorithm extends GeneticAlgorithm {
+public class CoevolutionAlgorithm {
 
 	private int lambda;
 	private int h;
@@ -16,8 +14,8 @@ public class CoevolutionAlgorithm extends GeneticAlgorithm {
 
 	private int n;
 	private double chi;
-	private int k;
-	private PrintStream out;
+	private int k = 2;
+	private PrintStream out = System.out;
 
 	public CoevolutionAlgorithm(int lambda, int h, int weeks, int time_budget) {
 		this.lambda = lambda;
@@ -30,18 +28,21 @@ public class CoevolutionAlgorithm extends GeneticAlgorithm {
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
 		int generation = 0;
-		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h, generation);
+		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h);
 
 		boolean end = false;
 
 		while (!end) {
-
+			generation++;
+			
 			for (int week = 0; week < weeks; week++) {
 				pop.simulateStep();
-				System.out.println(pop);
+				out.println(pop);
 			}
 			
+			pop = pop.evolve(k);
 			
+			end = System.currentTimeMillis() >= endTime;
 		}
 
 		/*
