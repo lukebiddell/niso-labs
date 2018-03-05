@@ -115,12 +115,14 @@ public class Main {
 
 	private static void ex2(String strategy_str, int state, int crowded_int, int repetitions) {
 		Strategy strat = Strategy.parseStrategy(strategy_str);
-
+		//System.out.println(strat);
+		
+		
 		boolean crowded = crowded_int > 0;
 		
 		for (int i = 0; i < repetitions; i++) {
 			strat.simulateStep(state, crowded);
-			System.out.println(strat.getSimulatedState() + "\t" + (strat.isSimulatedDecision() ? 1 : 0));
+			System.out.println((strat.isSimulatedDecision() ? 1 : 0) + "\t" + strat.getSimulatedState());
 		}
 	}
 

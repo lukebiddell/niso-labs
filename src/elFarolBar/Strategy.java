@@ -110,13 +110,13 @@ public final class Strategy {
 	}
 
 	public void simulateStep(int state_no, boolean crowded) {
-		simulatedState = getState(state_no).simulateStep(crowded);
-		simulatedDecision = ThreadLocalRandom.current().nextDouble() < getState(simulatedState).getProbability();
-
+		simulatedState = state_no;
+		simulateStep(crowded);
 	}
 
 	public void simulateStep(boolean crowded) {
-		simulateStep(simulatedState, crowded);
+		simulatedState = getState(simulatedState).simulateStep(crowded);
+		simulatedDecision = ThreadLocalRandom.current().nextDouble() < getState(simulatedState).getProbability();
 	}
 
 	public State getState(int s) {
