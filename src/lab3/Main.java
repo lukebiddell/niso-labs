@@ -33,7 +33,7 @@ public class Main {
 	private static int lambda;
 	private static int h;
 	private static int weeks;
-	private static int time_budget;
+	private static int max_t;
 
 	public static void main(String[] args) {
 		for (int i = 0; i < args.length; i++) {
@@ -56,8 +56,8 @@ public class Main {
 					h = Integer.parseInt(args[++i]);
 				else if (args[i].substring(1).equals("weeks"))
 					weeks = Integer.parseInt(args[++i]);
-				else if (args[i].substring(1).equals("time_budget"))
-					time_budget = Integer.parseInt(args[++i]);
+				else if (args[i].substring(1).equals("max_t"))
+					max_t = Integer.parseInt(args[++i]);
 				else if (args[i].substring(1).equals("crowded"))
 					crowded = Integer.parseInt(args[++i]);
 			}
@@ -71,7 +71,7 @@ public class Main {
 			ex2(strategy, state, crowded, repetitions);
 			break;
 		case 3:
-			ex3(lambda, h, weeks, time_budget);
+			ex3(lambda, h, weeks, max_t);
 			;
 			break;
 		case 6:
@@ -124,15 +124,13 @@ public class Main {
 		}
 	}
 
-	private static void ex3(int lambda, int h, int weeks, int time_budget) {
-		CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, time_budget);
+	private static void ex3(int lambda, int h, int weeks, int max_t) {
+		CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t);
 		
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append("tw\ttg\tb\tc");
+		/*StringBuilder sb = new StringBuilder("tw\ttg\tb\tc");
 		for(int i = 1; i <= lambda; i++)
 			sb.append("\ta").append(i);
-		System.out.println(sb);
+		System.out.println(sb);*/
 		
 		alg.startAlgorithm();
 	}

@@ -6,7 +6,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class StrategyPopulation extends ArrayList<Strategy> {
 
 	private static final long serialVersionUID = -135392962374553684L;
-	private Strategy bestStrategy;
 	private boolean crowded;
 	private int week = 0;
 	private int individualsInBar;
@@ -25,19 +24,29 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		return pop;
 	}
 	
-	public StrategyPopulation evolve(int k) {
+	public StrategyPopulation evolve(int k, double chi, double range) {
 		StrategyPopulation pop = new StrategyPopulation();
 
-		for(int i = 0; i < size(); i++){
+		while(pop.size() < size()){
+			ArrayList<Strategy> toAdd = new ArrayList<Strategy>();
+			
 			Strategy x = tournament(k);
 			Strategy y = tournament(k);
 			
-			Strategy z = Strategy.globalDiscreteRecombination(x, y);
+			Strategy z = Strategy.globalDiscreteRecombination(x, y).mutate(chi, range);
 			//System.out.println(x);
-			pop.add(z);
+			//toAdd.add(x);
+			//toAdd.add(y);
+			toAdd.add(z);
+			
+			int spaceLeft = Math.min(size() - pop.size(), toAdd.size());
+			
+			for(int i = 0; i < spaceLeft; i++){
+				pop.add(toAdd.get(i));
+			}
 		}
 		
-		pop.generation = ++generation;
+		pop.generation = generation + 1;
 		
 		
 		return pop;
@@ -68,10 +77,6 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		return best_fighters.get(ThreadLocalRandom.current().nextInt(best_fighters.size()));
 	}
 
-	public Strategy getBestStrategy() {
-		return bestStrategy;
-	}
-
 	public void simulateStep() {
 		individualsInBar = 0;
 		
@@ -95,8 +100,12 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		sb.append("\t").append(generation);
 		sb.append("\t").append(individualsInBar);
 		sb.append("\t").append(crowded ? '1' : '0');
-		//stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0'));//.append(" ").append(s.getPayoff()));
+		stream().forEach(s -> sb.append("\t").append(s.isSimulatedDecision() ? '1' : '0'));//.append(" ").append(s.getPayoff()));
 		
 		return sb.toString();
+	}
+	
+	public int getGeneration(){
+		return generation;
 	}
 }

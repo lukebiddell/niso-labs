@@ -58,4 +58,8 @@ public class ElFarolBar {
 		
 		return normalise(vals);
 	}
+	
+	public static double mutate(double value, double range){
+		return Math.max(0, value + (value*ThreadLocalRandom.current().nextDouble(-range, range)));
+	}
 }

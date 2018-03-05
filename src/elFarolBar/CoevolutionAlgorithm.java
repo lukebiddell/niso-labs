@@ -10,35 +10,40 @@ public class CoevolutionAlgorithm {
 	private int lambda;
 	private int h;
 	private int weeks;
-	private int time_budget;
+	//private int time_budget;
+	private int max_t;
 
 	private int n;
-	private double chi;
+	private double chi = 10;
 	private int k = 2;
+	private double range = 0.01;
 	private PrintStream out = System.out;
 
-	public CoevolutionAlgorithm(int lambda, int h, int weeks, int time_budget) {
+	public CoevolutionAlgorithm(int lambda, int h, int weeks, int max_t) {
 		this.lambda = lambda;
 		this.h = h;
 		this.weeks = weeks;
-		this.time_budget = time_budget;
+		//this.time_budget = time_budget;
+		this.max_t = max_t;
 	}
 
 	public void startAlgorithm() {
-		long endTime = System.currentTimeMillis() + time_budget * 1000;
+		//long endTime = System.currentTimeMillis() + time_budget * 1000;
 		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h);
 
-		boolean end = false;
+		//boolean end = false;
 
-		while (!end) {
+		// while (System.currentTimeMillis() < endTime) {
+		while (pop.getGeneration() <= max_t) {
+
 			for (int week = 0; week < weeks; week++) {
 				pop.simulateStep();
 				out.println(pop);
 			}
-			
-			pop = pop.evolve(k);
-			
-			end = System.currentTimeMillis() >= endTime;
+
+			pop = pop.evolve(k, chi, range);
+
+			// end = System.currentTimeMillis() >= endTime;
 		}
 
 		/*

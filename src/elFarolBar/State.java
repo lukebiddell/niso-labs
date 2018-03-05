@@ -58,6 +58,40 @@ public final class State {
 		
 		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
 	}
+	
+	public State mutate(double rate, double range){
+		int stateNumber = this.stateNumber;
+		double probability = this.probability;
+		double[] crowdedSTM = this.crowdedSTM;
+		double[] uncrowdedSTM = this.uncrowdedSTM;
+		
+		double rand = ThreadLocalRandom.current().nextDouble();
+
+		
+		if(rand < rate){
+			//TODO mutate probability
+			probability = ElFarolBar.mutate(probability, range);
+		}
+		
+		for(int i = 0; i < crowdedSTM.length; i++){
+			rand = ThreadLocalRandom.current().nextDouble();
+			
+			if(rand < rate){
+				//TODO mutate crowdedSTM[i]
+				crowdedSTM[i] = ElFarolBar.mutate(crowdedSTM[i], range);
+			}
+			
+			rand = ThreadLocalRandom.current().nextDouble();
+			
+			if(rand < rate){
+				//TODO mutate uncrowdedSTM[i]
+				uncrowdedSTM[i] = ElFarolBar.mutate(uncrowdedSTM[i], range);
+			}
+			
+		}
+		
+		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
+	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

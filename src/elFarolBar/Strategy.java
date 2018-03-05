@@ -20,8 +20,7 @@ public final class Strategy {
 	}
 
 	public static Strategy parseStrategy(String strat_str) {
-		
-		
+
 		String[] strat = strat_str.split(" ");
 
 		int p = 0;
@@ -29,7 +28,7 @@ public final class Strategy {
 		int h = Integer.parseInt(strat[p]);
 
 		Strategy s = new Strategy(h);
-		
+
 		s.states = new State[h];
 
 		for (int i = 0; i < h; i++) {
@@ -52,7 +51,7 @@ public final class Strategy {
 
 			assert p < strat.length;
 		}
-		
+
 		return s;
 
 	}
@@ -77,20 +76,27 @@ public final class Strategy {
 		return simulatedDecision;
 	}
 
-	public Strategy mutate() {
-		// TODO
-		return null;
+	public Strategy mutate(double chi, double range) {
+		Strategy strat = clone();
+
+		double rate = chi / (2 * strat.states.length + 1) * strat.states.length;
+
+		strat.states = Arrays.stream(strat.states).map(s -> s.mutate(rate, range)).toArray(State[]::new);
+
+		//System.out.println(Arrays.toString(states));
+		
+		return strat;
 	}
 
 	public static Strategy globalDiscreteRecombination(Strategy mother, Strategy father) {
 		// TODO
-		
+
 		Strategy child = new Strategy(mother.h);
-		
-		for(int i = 0; i < child.h; i++){
-			child.states[i] = State.globalDiscreteRecombination(mother.states[i], father.states[i]); //TODO
+
+		for (int i = 0; i < child.h; i++) {
+			child.states[i] = State.globalDiscreteRecombination(mother.states[i], father.states[i]); // TODO
 		}
-		
+
 		return child;
 	}
 
@@ -98,8 +104,8 @@ public final class Strategy {
 		if (simulatedDecision != crowded)
 			payoff++;
 	}
-	
-	public int getPayoff(){
+
+	public int getPayoff() {
 		return payoff;
 	}
 
@@ -122,6 +128,12 @@ public final class Strategy {
 		sb.append(h);
 		Arrays.stream(states).forEach(s -> sb.append(" ").append(s));
 		return sb.toString();
+	}
+
+	public Strategy clone() {
+		Strategy strat = new Strategy(h);
+		strat.states = states;
+		return strat;
 	}
 
 }
