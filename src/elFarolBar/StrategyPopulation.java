@@ -33,7 +33,7 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 			Strategy x = tournament(k);
 			Strategy y = tournament(k);
 			
-			Strategy z = Strategy.globalDiscreteRecombination(x, y).mutate(chi, range);
+			Strategy z = Strategy.globalDiscreteRecombination(x, y);//.mutate(chi, range);
 			//System.out.println(x);
 			//toAdd.add(x);
 			//toAdd.add(y);

@@ -14,9 +14,9 @@ public class CoevolutionAlgorithm {
 	private int max_t;
 
 	private int n;
-	private double chi = 10;
+	private double chi = 1;
 	private int k = 2;
-	private double range = 0.01;
+	private double range = 0.1;
 	private PrintStream out = System.out;
 
 	public CoevolutionAlgorithm(int lambda, int h, int weeks, int max_t) {
