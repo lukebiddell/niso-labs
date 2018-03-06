@@ -7,9 +7,9 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 
 	private static final long serialVersionUID = -135392962374553684L;
 	private boolean crowded;
-	private int week = 0;
+	private int week = -1;
 	private int individualsInBar;
-	private int generation = 1;
+	private int generation = 0;
 	
 
 	public static StrategyPopulation uniformRandom(int lambda, int h) {
