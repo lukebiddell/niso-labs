@@ -45,7 +45,7 @@ public final class Strategy {
 				uncrowdedSTM[j] = Double.parseDouble(strat[p + h]);
 			}
 
-			s.states[i] = new State(i, probability, crowdedSTM, uncrowdedSTM);
+			s.states[i] = new State(probability, crowdedSTM, uncrowdedSTM);
 
 			p += h;
 
@@ -62,6 +62,11 @@ public final class Strategy {
 		for (int i = 0; i < h; i++) {
 			strat.states[i] = State.uniformRandom(i, h);
 		}
+		
+		strat.simulatedState = ThreadLocalRandom.current().nextInt(h);
+		strat.simulatedDecision = ThreadLocalRandom.current().nextDouble() < strat.getState(strat.simulatedState).getProbability();
+		
+		
 
 		// System.out.println(strat);
 
@@ -87,6 +92,19 @@ public final class Strategy {
 		
 		return strat;
 	}
+	
+	public Strategy mutate2(double chi, double range, int precision) {
+		Strategy strat = clone();
+
+		double rate = chi / (2 * strat.states.length + 1) * strat.states.length;
+
+		strat.states = Arrays.stream(strat.states).map(s -> s.mutate2(rate, range, precision)).toArray(State[]::new);
+
+		//System.out.println(Arrays.toString(states));
+		
+		return strat;
+	}
+
 
 	public static Strategy globalDiscreteRecombination(Strategy mother, Strategy father) {
 		// TODO

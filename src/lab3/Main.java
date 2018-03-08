@@ -7,9 +7,11 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
+import elFarolBar.AlgorithmType;
 import elFarolBar.CoevolutionAlgorithm;
 import elFarolBar.ElFarolBar;
 import elFarolBar.State;
@@ -34,6 +36,13 @@ public class Main {
 	private static int h;
 	private static int weeks;
 	private static int max_t;
+
+	private static int k;
+	private static double chi;
+	private static double range;
+	private static int precision;
+	private static AlgorithmType type;
+	private static PrintStream out;
 
 	public static void main(String[] args) {
 		for (int i = 0; i < args.length; i++) {
@@ -75,7 +84,11 @@ public class Main {
 			;
 			break;
 		case 6:
-			ex6();
+			try {
+				ex6();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			break;
 		case 0:
 			test();
@@ -91,19 +104,19 @@ public class Main {
 		vals[0] = 0.88;
 		vals[1] = 0.01;
 		vals[2] = 2.0;
-		
+
 		double[] norm = ElFarolBar.normalise(vals);
-		
+
 		System.out.println(Arrays.toString(vals));
 		System.out.println(Arrays.toString(norm));
-		
+
 		System.out.println(Arrays.toString(ElFarolBar.randomDistribution(5)));
-		
+
 		System.out.println(State.uniformRandom(1, 4));
-		
+
 		System.out.println("");
 		StrategyPopulation.uniformRandom(5, 2);
-		
+
 	}
 
 	private static void ex1(String prob_str, int repetitions) {
@@ -115,11 +128,10 @@ public class Main {
 
 	private static void ex2(String strategy_str, int state, int crowded_int, int repetitions) {
 		Strategy strat = Strategy.parseStrategy(strategy_str);
-		//System.out.println(strat);
-		
-		
+		// System.out.println(strat);
+
 		boolean crowded = crowded_int > 0;
-		
+
 		for (int i = 0; i < repetitions; i++) {
 			strat.simulateStep(state, crowded);
 			System.out.println((strat.isSimulatedDecision() ? 1 : 0) + "\t" + strat.getSimulatedState());
@@ -128,102 +140,189 @@ public class Main {
 
 	private static void ex3(int lambda, int h, int weeks, int max_t) {
 		CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t);
-		
-		/*StringBuilder sb = new StringBuilder("tw\ttg\tb\tc");
-		for(int i = 1; i <= lambda; i++)
-			sb.append("\ta").append(i);
-		System.out.println(sb);*/
-		
 		alg.startAlgorithm();
+
+		/*
+		 * StringBuilder sb = new StringBuilder("tw\ttg\tb\tc"); for(int i = 1;
+		 * i <= lambda; i++) sb.append("\ta").append(i); System.out.println(sb);
+		 */
+
 	}
 
-	private static void ex6() {
-		try {
-			PrintStream out;
-			LinkedList<String> wdimacsList = new LinkedList<String>();
-			double chi;
-			int lambda;
-			int max_t = Integer.MAX_VALUE;
-			int k;
-			int time_budget = 5;
+	private static void ex6() throws IOException {
 
-			int v = ThreadLocalRandom.current().nextInt(100000, 1000000);
+		long v = new Date().getTime();
 
-			wdimacsList.add("wcnf/3col80_5_6.shuffled.cnf.wcnf");
-			wdimacsList.add("wcnf/SAT11__application__fuhs__AProVE11__AProVE11-09.cnf.wcnf.10.wcnf");
-			wdimacsList.add("wcnf/teams24_l4a.cnf.wcnf");
+		Files.createDirectories(Paths.get("logs/lab3"));
 
-			for (String wdimacs : wdimacsList) {
-				Files.createDirectories(Paths.get("logs/lab2/" + wdimacs));
+		
+		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "algorithmtype.tsv"));
+		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
 
-				out = new PrintStream(
-						new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_mutationrate_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
+		weeks = 10;
+		max_t = 500;
 
-				chi = 0.1;
-				lambda = 50;
-				k = 2;
-				while (chi < 3) {
-					for (int i = 0; i < 100; i++) {
-						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
-						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget,
-								true);
-					}
-
-					chi += 0.3;
-				}
-				out.close();
-
-				out = new PrintStream(
-						new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_populationsize_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
-
-				chi = 1;
-				lambda = 10;
-				k = 2;
-				while (lambda <= 1000) {
-					for (int i = 0; i < 100; i++) {
-						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
-						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget,
-								true);
-
-					}
-
-					lambda += 100;
-				}
-
-				out.close();
-
-				out = new PrintStream(
-						new FileOutputStream("logs/lab2/" + wdimacs + "/runtime_vs_tournamentsize_" + v + ".tsv"));
-				out.println("t\tnsat\tm\tn\tchi\tlambda\tk\ttimebudget");
-
-				chi = 1;
-				lambda = 50;
-				k = 2;
-				while (k <= 5) {
-					for (int i = 0; i < 100; i++) {
-						MaxSatInstance maxsat = new MaxSatInstance(wdimacs);
-						GeneticAlgorithm.simpleGeneticAlgorithmMaxSat(chi, k, lambda, max_t, out, maxsat, time_budget,
-								true);
-					}
-
-					k += 1;
-				}
-
-				out.close();
-
-				System.out.println("Logs completed");
+		k = 2;
+		
+		chi = 1;
+		range = 0.1;// [0.1, 10^-6]
+		precision = 5; // [4,5, ..., 20]
+		
+		type = AlgorithmType.GDR_THEN_MUTATE2;
+		
+		lambda = 100;
+		h = 4;
+		
+	
+		for(AlgorithmType type : AlgorithmType.values()) {
+			for (int i = 0; i < 100; i++) {
+				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
+						type);
+				alg.startAlgorithmAndLog(out);
+				System.out.print("\r" + type + "           " + i + " / 100");
 			}
-
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.err.println("File not found");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
+		out.close();
+		
+		
+		//////////////////////////////////////////////////
+		
+		
+		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "mutationrate.tsv"));
+		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+
+		weeks = 10;
+		max_t = 500;
+
+		k = 2;
+		
+		chi = 0.5;
+		range = 0.1;// [0.1, 10^-6]
+		precision = 5; // [4,5, ..., 20]
+		
+		type = AlgorithmType.GDR_THEN_MUTATE2;
+		
+		lambda = 100;
+		h = 4;
+		
+	
+		while (chi < 3) {
+			for (int i = 0; i < 100; i++) {
+				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
+						type);
+				alg.startAlgorithmAndLog(out);
+				System.out.print("\r" + chi + " / 3       " + i + " / 100");
+			}
+			
+
+			chi += 0.5;
+		}
+		out.close();
+		
+		
+		//////////////////////////////////////////////////
+		
+		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "k.tsv"));
+		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+
+		weeks = 10;
+		max_t = 500;
+
+		k = 2;
+		
+		chi = 1;
+		range = 0.1;// [0.1, 10^-6]
+		precision = 5; // [4,5, ..., 20]
+		
+		type = AlgorithmType.GDR;
+		
+		lambda = 100;
+		h = 4;
+		
+	
+		while (k <= 5) {
+			for (int i = 0; i < 100; i++) {
+				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
+						type);
+				alg.startAlgorithmAndLog(out);
+				System.out.print("\r" + k + " / 5       " + i + " / 100");
+			}
+			
+
+			k += 1;
+		}
+		out.close();
+		
+		//////////////////////////////////////////////
+		
+		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "h.tsv"));
+		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+
+		weeks = 10;
+		max_t = 500;
+
+		k = 2;
+		
+		chi = 1;
+		range = 0.1;// [0.1, 10^-6]
+		precision = 5; // [4,5, ..., 20]
+		
+		type = AlgorithmType.GDR;
+		
+		lambda = 100;
+		h = 3;
+		
+	
+		while (h <= 12) {
+			for (int i = 0; i < 100; i++) {
+				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
+						type);
+				alg.startAlgorithmAndLog(out);
+				System.out.print("\r" + h + " / 10       " + i + " / 100");
+			}
+			
+
+			h += 1;
+		}
+		out.close();
+		
+		//////////////////////////////////////////////
+		
+		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "lambda.tsv"));
+		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+
+		weeks = 10;
+		max_t = 500;
+
+		k = 2;
+		
+		chi = 1;
+		range = 0.1;// [0.1, 10^-6]
+		precision = 5; // [4,5, ..., 20]
+		
+		type = AlgorithmType.GDR;
+		
+		lambda = 10;
+		h = 3;
+		
+	
+		while (lambda <= 1000) {
+			for (int i = 0; i < 100; i++) {
+				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
+						type);
+				alg.startAlgorithmAndLog(out);
+				System.out.print("\r" + lambda + " / 1000       " + i + " / 100");
+			}
+			
+
+			h += 100;
+		}
+		out.close();
+		
+		//////////////////////////////////////////////
+		
+
+		System.out.println("Logs completed");
 
 	}
 

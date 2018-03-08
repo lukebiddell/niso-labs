@@ -42,24 +42,35 @@ public class ElFarolBar {
 	public static double[] normalise(double[] vals) {
 		double[] v = new double[vals.length];
 		double sum = DoubleStream.of(vals).sum();
-		
+
 		for (int i = 0; i < v.length; i++) {
 			v[i] = vals[i] / sum;
 		}
 
 		return v;
 	}
-	
-	public static double[] randomDistribution(int h){
+
+	public static double[] randomDistribution(int h) {
 		double[] vals = new double[h];
-		for(int i = 0; i < h; i++){
+		for (int i = 0; i < h; i++) {
 			vals[i] = ThreadLocalRandom.current().nextDouble();
 		}
-		
+
 		return normalise(vals);
 	}
-	
-	public static double mutate(double value, double range){
-		return Math.max(0, value + (value*ThreadLocalRandom.current().nextDouble(-range, range)));
+
+	public static double mutate(double value, double range) {
+		return Math.max(0, value + (value * ThreadLocalRandom.current().nextDouble(-range, range)));
+	}
+
+	public static double mutate2(double value, double range, int precision) {
+		int s = ThreadLocalRandom.current().nextInt(-1, 2);
+		int u = ThreadLocalRandom.current().nextInt(0, 2);
+		double a = Math.pow(2, -u * precision);
+
+		double var = Math.max(0.00000001, value + s * range * a);
+		//System.out.println("Mutated from\t" + value + "\tto\t" + var);
+
+		return var;
 	}
 }

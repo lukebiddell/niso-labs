@@ -1,12 +1,9 @@
 package elFarolBar;
 
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class State {
-
-	private final int stateNumber;
 
 	private final double probability;
 
@@ -29,8 +26,7 @@ public final class State {
 
 	}*/
 
-	public State(int stateNumber, double probability, double[] crowdedSTM, double[] uncrowdedSTM) {
-		this.stateNumber = stateNumber;
+	public State(double probability, double[] crowdedSTM, double[] uncrowdedSTM) {
 		this.probability = probability;
 		this.crowdedSTM = crowdedSTM;
 		this.uncrowdedSTM = uncrowdedSTM;
@@ -41,11 +37,10 @@ public final class State {
 		double[] crowdedSTM = ElFarolBar.randomDistribution(h);
 		double[] uncrowdedSTM = ElFarolBar.randomDistribution(h);
 		
-		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
+		return new State(probability, crowdedSTM, uncrowdedSTM);
 	}
 	
 	public static State globalDiscreteRecombination(State mother, State father){
-		int stateNumber = mother.stateNumber;
 		double probability =  ThreadLocalRandom.current().nextBoolean() ? mother.probability : father.probability;
 		double[] crowdedSTM = new double[mother.crowdedSTM.length];
 		double[] uncrowdedSTM = new double[mother.uncrowdedSTM.length];
@@ -56,11 +51,10 @@ public final class State {
 			uncrowdedSTM[i] = ThreadLocalRandom.current().nextBoolean() ? mother.uncrowdedSTM[i] : father.uncrowdedSTM[i];
 		}
 		
-		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
+		return new State(probability, crowdedSTM, uncrowdedSTM);
 	}
 	
 	public State mutate(double rate, double range){
-		int stateNumber = this.stateNumber;
 		double probability = this.probability;
 		double[] crowdedSTM = this.crowdedSTM;
 		double[] uncrowdedSTM = this.uncrowdedSTM;
@@ -90,29 +84,64 @@ public final class State {
 			
 		}
 		
-		return new State(stateNumber, probability, crowdedSTM, uncrowdedSTM);
+		return new State(probability, crowdedSTM, uncrowdedSTM);
+	}
+	
+	public State mutate2(double rate, double range, int precision){
+		double probability = this.probability;
+		double[] crowdedSTM = this.crowdedSTM;
+		double[] uncrowdedSTM = this.uncrowdedSTM;
+		
+		double rand = ThreadLocalRandom.current().nextDouble();
+
+		
+		if(rand < rate){
+			//TODO mutate probability
+			probability = ElFarolBar.mutate2(probability, range, precision);
+		}
+		
+		for(int i = 0; i < crowdedSTM.length; i++){
+			rand = ThreadLocalRandom.current().nextDouble();
+			
+			if(rand < rate){
+				//TODO mutate crowdedSTM[i]
+				crowdedSTM[i] = ElFarolBar.mutate2(crowdedSTM[i], range, precision);
+			}
+			
+			rand = ThreadLocalRandom.current().nextDouble();
+			
+			if(rand < rate){
+				//TODO mutate uncrowdedSTM[i]
+				uncrowdedSTM[i] = ElFarolBar.mutate2(uncrowdedSTM[i], range, precision);
+			}
+			
+		}
+		
+		return new State(probability, crowdedSTM, uncrowdedSTM);
 	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(probability);
-		for(int i = 0; i < crowdedSTM.length; i++){
+		
+		Arrays.stream(crowdedSTM).forEach(s -> sb.append(" ").append(s));
+		Arrays.stream(uncrowdedSTM).forEach(s -> sb.append(" ").append(s));
+
+		
+		/*for(int i = 0; i < crowdedSTM.length; i++){
 			sb.append(" ");
 			sb.append(crowdedSTM[i]);
 		}
 		for(int i = 0; i < uncrowdedSTM.length; i++){
 			sb.append(" ");
 			sb.append(uncrowdedSTM[i]);
-		}
+		}*/
 		
 		return sb.toString();
 	}
 	
 	public int simulateStep(boolean crowded){
-		if(crowded)
-			return ElFarolBar.distributionSampler(crowdedSTM);
-		else
-			return ElFarolBar.distributionSampler(uncrowdedSTM);
+		return ElFarolBar.distributionSampler(crowded ? crowdedSTM : uncrowdedSTM);
 	}
 	
 	public double getProbability(){
