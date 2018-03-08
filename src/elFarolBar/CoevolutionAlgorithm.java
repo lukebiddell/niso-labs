@@ -18,7 +18,7 @@ public class CoevolutionAlgorithm {
 	private int k = 2;
 	private double range = 0.1; // [0.1, 10^-6]
 	private int precision = 5; // [4,5, ..., 20]
-	private AlgorithmType type;
+	private AlgorithmType type = AlgorithmType.GDR;
 
 	public CoevolutionAlgorithm(int lambda, int h, int weeks, int max_t) {
 		this.lambda = lambda;
