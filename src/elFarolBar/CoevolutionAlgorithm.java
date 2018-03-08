@@ -24,7 +24,7 @@ public class CoevolutionAlgorithm {
 		this.lambda = lambda;
 		this.h = h;
 		this.weeks = weeks;
-		// this.time_budget = time_budget;
+		// this.time_budget = time_budgcd ../et;
 		this.max_t = max_t;
 	}
 
@@ -56,26 +56,47 @@ public class CoevolutionAlgorithm {
 		// boolean end = false;
 
 		// while (System.currentTimeMillis() < endTime) {
+		
+		StrategyPopulation best_pop = pop;
+		double best_average = 0;
+		
+		
 		while (pop.getGeneration() < max_t) {
 
+			int individualsInBar = 0;
+			
 			while (pop.getWeek() < weeks - 1) {
 				pop.simulateStep();
 				if (logging) {
-					StringBuilder sb = new StringBuilder(pop.toLogString());
-					sb.append("\t").append(h).append("\t").append(lambda).append("\t").append(k).append("\t")
-							.append(chi).append("\t").append(range).append("\t").append(precision).append("\t")
-							.append(type);
+					individualsInBar += pop.getIndividualsInBar();
+					//StringBuilder sb = new StringBuilder(pop.toLogString());
+					//sb.append("\t").append(h).append("\t").append(lambda).append("\t").append(k).append("\t").append(chi).append("\t").append(range).append("\t").append(precision).append("\t").append(type);
 
-					out.println(sb);
+					//out.println(sb);
 
 				} else {
 					out.println(pop);
 				}
 			}
+			
+			if(pop.getTotalPayoff() > best_pop.getTotalPayoff()){
+				best_pop = pop;
+				best_average = (double) individualsInBar / (double) weeks;
+			}
 
 			pop = pop.evolve(k, chi, range, precision, type);
 
 			// end = System.currentTimeMillis() >= endTime;
+		}
+		
+		if (logging) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(best_pop.getWeek()).append("\t").append(best_average).append("\t").append(h).append("\t").append(lambda).append("\t").append(k).append("\t")
+					.append(chi).append("\t").append(range).append("\t").append(precision).append("\t")
+					.append(type);
+
+			out.println(sb);
+
 		}
 
 	}

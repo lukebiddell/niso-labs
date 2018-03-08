@@ -10,6 +10,7 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 	private int week = -1;
 	private int individualsInBar;
 	private int generation = 0;
+	private int totalPayoff = -1;
 
 	public static StrategyPopulation uniformRandom(int lambda, int h) {
 		StrategyPopulation pop = new StrategyPopulation();
@@ -116,6 +117,14 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 		
 		return sb.toString();
 	}
+	
+	public int getTotalPayoff(){
+		if(totalPayoff < 0){
+			totalPayoff = stream().mapToInt(Strategy::getPayoff).sum();
+		}
+		
+		return totalPayoff;
+	}
 
 	public int getGeneration() {
 		return generation;
@@ -123,5 +132,9 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 	
 	public int getWeek() {
 		return week;
+	}
+	
+	public int getIndividualsInBar(){
+		return individualsInBar;
 	}
 }

@@ -126,16 +126,6 @@ public final class State {
 		
 		Arrays.stream(crowdedSTM).forEach(s -> sb.append(" ").append(s));
 		Arrays.stream(uncrowdedSTM).forEach(s -> sb.append(" ").append(s));
-
-		
-		/*for(int i = 0; i < crowdedSTM.length; i++){
-			sb.append(" ");
-			sb.append(crowdedSTM[i]);
-		}
-		for(int i = 0; i < uncrowdedSTM.length; i++){
-			sb.append(" ");
-			sb.append(uncrowdedSTM[i]);
-		}*/
 		
 		return sb.toString();
 	}
