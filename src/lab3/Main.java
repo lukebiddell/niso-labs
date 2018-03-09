@@ -1,6 +1,5 @@
 package lab3;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -8,8 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.concurrent.ThreadLocalRandom;
 
 import elFarolBar.AlgorithmType;
 import elFarolBar.CoevolutionAlgorithm;
@@ -17,8 +14,6 @@ import elFarolBar.ElFarolBar;
 import elFarolBar.State;
 import elFarolBar.Strategy;
 import elFarolBar.StrategyPopulation;
-import helper.GeneticAlgorithm;
-import helper.MaxSatInstance;
 
 public class Main {
 
@@ -157,10 +152,10 @@ public class Main {
 
 		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "algorithmtype.tsv"));
-		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
 		weeks = 10;
-		max_t = 500;
+		max_t = 1000;
 
 		k = 2;
 		
@@ -178,7 +173,7 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				//alg.startAlgorithmAndLog(out);
+				alg.startAlgorithmAndLog(out);
 				System.out.print("\r" + type + "           " + i + " / 100");
 			}
 		}
@@ -189,10 +184,10 @@ public class Main {
 		
 		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "mutationrate.tsv"));
-		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
 		weeks = 10;
-		max_t = 500;
+		max_t = 1000;
 
 		k = 2;
 		
@@ -210,7 +205,7 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				//alg.startAlgorithmAndLog(out);
+				alg.startAlgorithmAndLog(out);
 				System.out.print("\r" + chi + " / 3       " + i + " / 100");
 			}
 			
@@ -223,10 +218,10 @@ public class Main {
 		//////////////////////////////////////////////////
 		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "k.tsv"));
-		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
 		weeks = 10;
-		max_t = 500;
+		max_t = 1000;
 
 		k = 2;
 		
@@ -244,7 +239,7 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				//alg.startAlgorithmAndLog(out);
+				alg.startAlgorithmAndLog(out);
 				System.out.print("\r" + k + " / 5       " + i + " / 100");
 			}
 			
@@ -256,10 +251,10 @@ public class Main {
 		//////////////////////////////////////////////
 		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "h.tsv"));
-		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
 		weeks = 10;
-		max_t = 500;
+		max_t = 1000;
 
 		k = 2;
 		
@@ -277,7 +272,7 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				//alg.startAlgorithmAndLog(out);
+				alg.startAlgorithmAndLog(out);
 				System.out.print("\r" + h + " / 10       " + i + " / 100");
 			}
 			
@@ -289,10 +284,10 @@ public class Main {
 		//////////////////////////////////////////////
 		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "lambda.tsv"));
-		out.println("tw\ttg\tb\tc\th\tlambda\tk\tchi\trange\tprecision\ttype");
+		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
 		weeks = 10;
-		max_t = 500;
+		max_t = 1000;
 
 		k = 2;
 		
