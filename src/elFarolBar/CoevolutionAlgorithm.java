@@ -44,10 +44,10 @@ public class CoevolutionAlgorithm {
 	}
 
 	public void startAlgorithm() {
-		startAlgorithmAndLog(System.out);
+		startAlgorithmAndLogBestPop(System.out);
 	}
 
-	public void startAlgorithmAndLog(PrintStream out) {
+	public void startAlgorithmAndLogBestPop(PrintStream out) {
 		boolean logging = out != System.out;
 
 		// long endTime = System.currentTimeMillis() + time_budget * 1000;
@@ -61,7 +61,7 @@ public class CoevolutionAlgorithm {
 		double best_average = 0;
 
 		while (pop.getGeneration() < max_t) {
-
+			
 			int individualsInBar = 0;
 
 			while (pop.getWeek() < weeks - 1) {
@@ -92,6 +92,49 @@ public class CoevolutionAlgorithm {
 			StringBuilder sb = new StringBuilder();
 			sb.append(best_pop.getWeek()).append("\t").append(best_pop.getGeneration()).append("\t")
 					.append(best_average).append("\t").append(h).append("\t").append(lambda).append("\t").append(k)
+					.append("\t").append(chi).append("\t").append(range).append("\t").append(precision).append("\t")
+					.append(type);
+
+			out.println(sb);
+
+		}
+
+	}
+	
+	public void startAlgorithmAndLogFinalPop(PrintStream out) {
+		boolean logging = out != System.out;
+		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h);
+
+
+		int individualsInBar = 0;
+
+		
+		while (pop.getGeneration() < max_t) {
+			
+
+			while (pop.getWeek() < weeks - 1) {
+				pop.simulateStep();
+				if(!logging){
+					out.println(pop);
+				}
+				else if (pop.getGeneration() == max_t - 1) {
+					individualsInBar += pop.getIndividualsInBar();
+				}
+			}
+
+			if(pop.getGeneration() < max_t - 1){
+				pop = pop.evolve(k, chi, range, precision, type);
+			}
+			
+
+			// end = System.currentTimeMillis() >= endTime;
+		}
+
+		if (logging) {
+			double averageInBar = (double) individualsInBar / (double) weeks;
+			StringBuilder sb = new StringBuilder();
+			sb.append(pop.getWeek()).append("\t").append(pop.getGeneration()).append("\t")
+					.append(averageInBar).append("\t").append(h).append("\t").append(lambda).append("\t").append(k)
 					.append("\t").append(chi).append("\t").append(range).append("\t").append(precision).append("\t")
 					.append(type);
 

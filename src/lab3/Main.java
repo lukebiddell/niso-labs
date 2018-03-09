@@ -150,7 +150,6 @@ public class Main {
 
 		Files.createDirectories(Paths.get("logs/lab3"));
 
-		
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "algorithmtype.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
@@ -158,31 +157,29 @@ public class Main {
 		max_t = 1000;
 
 		k = 2;
-		
+
 		chi = 1;
 		range = 0.1;// [0.1, 10^-6]
 		precision = 5; // [4,5, ..., 20]
-		
+
 		type = AlgorithmType.GDR_THEN_MUTATE2;
-		
+
 		lambda = 100;
 		h = 4;
-		
-	
-		for(AlgorithmType type : AlgorithmType.values()) {
+
+		for (AlgorithmType type : AlgorithmType.values()) {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				alg.startAlgorithmAndLog(out);
-				System.out.print("\r" + type + "           " + i + " / 100");
+				// alg.startAlgorithmAndLogBestPop(out);
+				alg.startAlgorithmAndLogFinalPop(out);
+				System.out.print("\r" + type + "           " + i + " / 100              ");
 			}
 		}
 		out.close();
-		
-		
+
 		//////////////////////////////////////////////////
-		
-		
+
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "mutationrate.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
@@ -190,33 +187,31 @@ public class Main {
 		max_t = 1000;
 
 		k = 2;
-		
+
 		chi = 0.5;
 		range = 0.1;// [0.1, 10^-6]
 		precision = 5; // [4,5, ..., 20]
-		
+
 		type = AlgorithmType.GDR_THEN_MUTATE2;
-		
+
 		lambda = 100;
 		h = 4;
-		
-	
+
 		while (chi < 3) {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				alg.startAlgorithmAndLog(out);
-				System.out.print("\r" + chi + " / 3       " + i + " / 100");
+				// alg.startAlgorithmAndLogBestPop(out);
+				alg.startAlgorithmAndLogFinalPop(out);
+				System.out.print("\r" + chi + " / 3       " + i + " / 100              ");
 			}
-			
 
 			chi += 0.5;
 		}
 		out.close();
-		
-		
+
 		//////////////////////////////////////////////////
-		
+
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "k.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
@@ -224,32 +219,31 @@ public class Main {
 		max_t = 1000;
 
 		k = 2;
-		
+
 		chi = 1;
 		range = 0.1;// [0.1, 10^-6]
 		precision = 5; // [4,5, ..., 20]
-		
+
 		type = AlgorithmType.GDR;
-		
+
 		lambda = 100;
 		h = 4;
-		
-	
+
 		while (k <= 5) {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				alg.startAlgorithmAndLog(out);
-				System.out.print("\r" + k + " / 5       " + i + " / 100");
+				// alg.startAlgorithmAndLogBestPop(out);
+				alg.startAlgorithmAndLogFinalPop(out);
+				System.out.print("\r" + k + " / 5       " + i + " / 100              ");
 			}
-			
 
 			k += 1;
 		}
 		out.close();
-		
+
 		//////////////////////////////////////////////
-		
+
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "h.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
@@ -257,32 +251,31 @@ public class Main {
 		max_t = 1000;
 
 		k = 2;
-		
+
 		chi = 1;
 		range = 0.1;// [0.1, 10^-6]
 		precision = 5; // [4,5, ..., 20]
-		
+
 		type = AlgorithmType.GDR;
-		
+
 		lambda = 100;
 		h = 3;
-		
-	
+
 		while (h <= 12) {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				alg.startAlgorithmAndLog(out);
-				System.out.print("\r" + h + " / 10       " + i + " / 100");
+				// alg.startAlgorithmAndLogBestPop(out);
+				alg.startAlgorithmAndLogFinalPop(out);
+				System.out.print("\r" + h + " / 10       " + i + " / 100              ");
 			}
-			
 
 			h += 1;
 		}
 		out.close();
-		
+
 		//////////////////////////////////////////////
-		
+
 		out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "lambda.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
 
@@ -290,32 +283,30 @@ public class Main {
 		max_t = 1000;
 
 		k = 2;
-		
+
 		chi = 1;
 		range = 0.1;// [0.1, 10^-6]
 		precision = 5; // [4,5, ..., 20]
-		
+
 		type = AlgorithmType.GDR;
-		
+
 		lambda = 10;
 		h = 4;
-		
-	
+
 		while (lambda <= 1000) {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				alg.startAlgorithmAndLog(out);
-				System.out.print("\r" + lambda + " / 1000       " + i + " / 100");
+				// alg.startAlgorithmAndLogBestPop(out);
+				alg.startAlgorithmAndLogFinalPop(out);
+				System.out.print("\r" + lambda + " / 1000       " + i + " / 100              ");
 			}
-			
 
 			lambda += 100;
 		}
 		out.close();
-		
+
 		//////////////////////////////////////////////
-		
 
 		System.out.println("Logs completed");
 
