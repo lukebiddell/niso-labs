@@ -171,8 +171,8 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				// alg.startAlgorithmAndLogBestPop(out);
-				alg.startAlgorithmAndLogFinalPop(out);
+				 alg.startAlgorithmAndLogBestPop(out);
+				//alg.startAlgorithmAndLogFinalPop(out);
 				System.out.print("\r" + type + "           " + i + " / 100              ");
 			}
 		}
@@ -201,8 +201,8 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				// alg.startAlgorithmAndLogBestPop(out);
-				alg.startAlgorithmAndLogFinalPop(out);
+				 alg.startAlgorithmAndLogBestPop(out);
+				//alg.startAlgorithmAndLogFinalPop(out);
 				System.out.print("\r" + chi + " / 3       " + i + " / 100              ");
 			}
 
@@ -233,8 +233,8 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				// alg.startAlgorithmAndLogBestPop(out);
-				alg.startAlgorithmAndLogFinalPop(out);
+				 alg.startAlgorithmAndLogBestPop(out);
+				//alg.startAlgorithmAndLogFinalPop(out);
 				System.out.print("\r" + k + " / 5       " + i + " / 100              ");
 			}
 
@@ -265,8 +265,8 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				// alg.startAlgorithmAndLogBestPop(out);
-				alg.startAlgorithmAndLogFinalPop(out);
+				alg.startAlgorithmAndLogBestPop(out);
+				//alg.startAlgorithmAndLogFinalPop(out);
 				System.out.print("\r" + h + " / 10       " + i + " / 100              ");
 			}
 
@@ -297,8 +297,8 @@ public class Main {
 			for (int i = 0; i < 100; i++) {
 				CoevolutionAlgorithm alg = new CoevolutionAlgorithm(lambda, h, weeks, max_t, chi, k, range, precision,
 						type);
-				// alg.startAlgorithmAndLogBestPop(out);
-				alg.startAlgorithmAndLogFinalPop(out);
+				alg.startAlgorithmAndLogBestPop(out);
+				//alg.startAlgorithmAndLogFinalPop(out);
 				System.out.print("\r" + lambda + " / 1000       " + i + " / 100              ");
 			}
 

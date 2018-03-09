@@ -20,6 +20,8 @@ public class CoevolutionAlgorithm {
 	private int precision = 5; // [4,5, ..., 20]
 	private AlgorithmType type = AlgorithmType.GDR;
 
+	private int fitnessPenalty = 0;
+	
 	public CoevolutionAlgorithm(int lambda, int h, int weeks, int max_t) {
 		this.lambda = lambda;
 		this.h = h;
@@ -59,10 +61,12 @@ public class CoevolutionAlgorithm {
 
 		StrategyPopulation best_pop = pop;
 		double best_average = 0;
-
+		int bestFitnessPenalty = Integer.MIN_VALUE;
+		
 		while (pop.getGeneration() < max_t) {
-			
+
 			int individualsInBar = 0;
+			fitnessPenalty = 0;
 
 			while (pop.getWeek() < weeks - 1) {
 				pop.simulateStep();
@@ -72,13 +76,14 @@ public class CoevolutionAlgorithm {
 					// sb.append("\t").append(h).append("\t").append(lambda).append("\t").append(k).append("\t").append(chi).append("\t").append(range).append("\t").append(precision).append("\t").append(type);
 
 					// out.println(sb);
+					updateFitnessPenalty(pop);
 
 				} else {
 					out.println(pop);
 				}
 			}
 
-			if (pop.getTotalPayoff() > best_pop.getTotalPayoff()) {
+			if (fitnessPenalty > bestFitnessPenalty) {
 				best_pop = pop;
 				best_average = (double) individualsInBar / (double) weeks;
 			}
@@ -101,31 +106,35 @@ public class CoevolutionAlgorithm {
 
 	}
 	
+	private void updateFitnessPenalty(StrategyPopulation pop){
+		if(!pop.isCrowded()){
+			fitnessPenalty += pop.getIndividualsInBar();
+		}
+		else{
+			fitnessPenalty -= 100*pop.getIndividualsInBar();
+		}
+	}
+
 	public void startAlgorithmAndLogFinalPop(PrintStream out) {
 		boolean logging = out != System.out;
 		StrategyPopulation pop = StrategyPopulation.uniformRandom(lambda, h);
-
+		StrategyPopulation best_pop = pop;
 
 		int individualsInBar = 0;
 
-		
 		while (pop.getGeneration() < max_t) {
-			
 
 			while (pop.getWeek() < weeks - 1) {
 				pop.simulateStep();
-				if(!logging){
+				if (!logging) {
 					out.println(pop);
-				}
-				else if (pop.getGeneration() == max_t - 1) {
+				} else if (pop.getGeneration() == max_t - 1) {
 					individualsInBar += pop.getIndividualsInBar();
 				}
 			}
 
-			if(pop.getGeneration() < max_t - 1){
-				pop = pop.evolve(k, chi, range, precision, type);
-			}
-			
+			best_pop = pop;
+			pop = pop.evolve(k, chi, range, precision, type);
 
 			// end = System.currentTimeMillis() >= endTime;
 		}
@@ -133,7 +142,7 @@ public class CoevolutionAlgorithm {
 		if (logging) {
 			double averageInBar = (double) individualsInBar / (double) weeks;
 			StringBuilder sb = new StringBuilder();
-			sb.append(pop.getWeek()).append("\t").append(pop.getGeneration()).append("\t")
+			sb.append(best_pop.getWeek()).append("\t").append(best_pop.getGeneration()).append("\t")
 					.append(averageInBar).append("\t").append(h).append("\t").append(lambda).append("\t").append(k)
 					.append("\t").append(chi).append("\t").append(range).append("\t").append(precision).append("\t")
 					.append(type);

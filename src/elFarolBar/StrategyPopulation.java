@@ -137,4 +137,8 @@ public class StrategyPopulation extends ArrayList<Strategy> {
 	public int getIndividualsInBar(){
 		return individualsInBar;
 	}
+	
+	public boolean isCrowded(){
+		return crowded;
+	}
 }
