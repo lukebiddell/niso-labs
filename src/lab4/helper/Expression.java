@@ -1,28 +1,21 @@
 package lab4.helper;
 
-import de.tudresden.inf.lat.jsexp.Sexp;
-import de.tudresden.inf.lat.jsexp.SexpFactory;
-import de.tudresden.inf.lat.jsexp.SexpParserException;
+import java.util.OptionalDouble;
 
-public class Expression {
-
-	Sexp sexp;
+public abstract class Expression {
 	
-	public Expression(){
-		
+	public abstract double eval(Vector v);
+	
+	private double fitness(TrainingLine l){
+		return l.getY() - eval(l.getX());
 	}
 	
-	public static Expression parse(String expr_str) throws SexpParserException{
-		Expression e = new Expression();
-		e.sexp = SexpFactory.parse(expr_str);
-		return e;
+	public double fitness(TrainingData data){
+			OptionalDouble v = data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average();
+			double fitness = v.orElseThrow(IllegalStateException::new);
+			
+			return fitness;
 	}
 	
-	public double evaluate(){
-		System.out.println(sexp.get(1));
-		
-		
-		return new Double(0);
-	}
 	
 }

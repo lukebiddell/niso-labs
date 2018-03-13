@@ -1,4 +1,4 @@
-package lab4;
+package lab4.main;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,38 +9,39 @@ import java.util.Date;
 
 import de.tudresden.inf.lat.jsexp.SexpParserException;
 import lab4.helper.Expression;
+import lab4.helper.ExpressionFactory;
+import lab4.helper.TrainingData;
+import lab4.helper.Vector;
 
 public class Main {
 
 	private static int question;//
-	
+
 	private static String expr;//
 	private static int n;//
 	private static String x;//
-	
-	private static String m;
+
+	private static int m;
 	private static String data;
-	
+
 	private static int lambda;//
 	private static int time_budget;//
-	
-	//private static int repetitions;//
 
-	
+	// private static int repetitions;//
 
 	public static void main(String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].startsWith("-")) {
 				if (args[i].substring(1).equals("question"))
 					question = Integer.parseInt(args[++i]);
-				//else if (args[i].substring(1).equals("repetitions"))
-					//repetitions = Integer.parseInt(args[++i]);
+				// else if (args[i].substring(1).equals("repetitions"))
+				// repetitions = Integer.parseInt(args[++i]);
 				else if (args[i].substring(1).equals("expr"))
 					expr = args[++i];
 				else if (args[i].substring(1).equals("x"))
 					x = args[++i];
 				else if (args[i].substring(1).equals("m"))
-					m = args[++i];
+					m = Integer.parseInt(args[++i]);
 				else if (args[i].substring(1).equals("lambda"))
 					lambda = Integer.parseInt(args[++i]);
 				else if (args[i].substring(1).equals("n"))
@@ -83,24 +84,44 @@ public class Main {
 	}
 
 	private static void test() {
-
-	}
-
-	private static void ex1(String expr_str, int n, String x_str) {
 		try {
-			Expression expr = Expression.parse(expr_str);
-			expr.evaluate();
-		} catch (SexpParserException e) {
+			TrainingData data = TrainingData.parseFile("training/bitcoin-price-full.tsv");
+			System.out.println(data);
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private static void ex2(String expr_str, int n, String m_str, String data) {
-		
+	private static void ex1(String expr_str, int n, String x_str) {
+		try {
+			// OldExpression oldExpr = OldExpression.parse(expr_str);
+			// oldExpr.evaluate();
+
+			Expression expr = ExpressionFactory.parse(expr_str);
+			System.out.println(expr.eval(Vector.parse(x_str, n)));
+
+		} catch (SexpParserException e) {
+			e.printStackTrace();
+		}
 	}
 
-	private static void ex3(int lambda, int n, String m_str, String data, int time_budget) {
+	private static void ex2(String expr_str, int n, int m, String data_str) {
+		try {
+			TrainingData data = TrainingData.parseFile(data_str, n, m);
+			Expression expr = ExpressionFactory.parse(expr_str);
+			
+			System.out.println(expr.fitness(data));
+		} catch (IOException e) {
+			System.err.println("Error reading training data.");
+			e.printStackTrace();
+		} catch (SexpParserException e) {
+			System.err.println("Error parsing s-expression.");
+			e.printStackTrace();
+		}
+	}
+
+	private static void ex3(int lambda, int n, int m, String data, int time_budget) {
 
 	}
 
@@ -113,7 +134,7 @@ public class Main {
 
 		PrintStream out = new PrintStream(new FileOutputStream("logs/lab3/" + v + "mutationrate.tsv"));
 		out.println("tw\ttg\tb\th\tlambda\tk\tchi\trange\tprec\ttype");
-		
+
 		out.close();
 
 		//////////////////////////////////////////////////
