@@ -5,16 +5,15 @@ import lab4.helper.Vector;
 
 public class MaxExpression extends Expression {
 
-	private Expression e1, e2;
-
 	public MaxExpression(Expression e1, Expression e2) {
-		this.e1 = e1;
-		this.e2 = e2;
+		super(ExpressionType.MAX);
+		this.e[0] = e1;
+		this.e[1] = e2;
 	}
 
 	@Override
 	public double eval(Vector v) {
-		return Math.max(e1.eval(v), e2.eval(v));
+		return Math.max(e[0].eval(v), e[1].eval(v));
 	}
 
 }

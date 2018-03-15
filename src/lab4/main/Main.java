@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 import de.tudresden.inf.lat.jsexp.SexpParserException;
+import lab4.geneticalgorithm.GeneticProgrammingAlgorithm;
 import lab4.helper.Expression;
 import lab4.helper.ExpressionFactory;
 import lab4.helper.TrainingData;
@@ -121,8 +122,14 @@ public class Main {
 		}
 	}
 
-	private static void ex3(int lambda, int n, int m, String data, int time_budget) {
-
+	private static void ex3(int lambda, int n, int m, String data_str, int time_budget) {
+		try {
+			TrainingData data = TrainingData.parseFile(data_str, n, m);
+			GeneticProgrammingAlgorithm alg = new GeneticProgrammingAlgorithm(lambda, n, m, data, time_budget);
+			alg.startAlgorithm();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void ex6() throws IOException {

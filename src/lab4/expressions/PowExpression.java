@@ -5,16 +5,15 @@ import lab4.helper.Vector;
 
 public class PowExpression extends Expression {
 
-	private Expression e1, e2;
-
 	public PowExpression(Expression e1, Expression e2) {
-		this.e1 = e1;
-		this.e2 = e2;
+		super(ExpressionType.POW);
+		this.e[0] = e1;
+		this.e[1] = e2;
 	}
 
 	@Override
 	public double eval(Vector v) {
-		return Math.pow(e1.eval(v), e2.eval(v));
+		return makeFinite(Math.pow(e[0].eval(v), e[1].eval(v)));
 	}
 
 }
