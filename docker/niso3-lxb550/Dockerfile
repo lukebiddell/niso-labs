@@ -5,6 +5,7 @@ ADD src /src
 RUN apt-get update
 RUN apt-get -y install default-jre default-jdk
 #
-RUN javac -d bin src/*/*.java
+RUN mkdir bin
+RUN javac -d bin $(find src -name *.java)
 #
-CMD ["-username", "lxb550", "-submission" , "java -cp bin lab3.Main"]
+CMD ["-username", "lxb550", "-submission" , "java -cp bin lab3.main.Main"]

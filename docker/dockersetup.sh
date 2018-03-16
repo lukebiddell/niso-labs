@@ -13,6 +13,7 @@ then
 elif [ "$1" = "3" ]
 then
 	rm -r docker/niso3-lxb550/src
+	rm -r docker/niso3-lxb550/bin
 	mkdir -p docker/niso3-lxb550/src
 	cp -r src/lab3 docker/niso3-lxb550/src/
 	echo "Lab 3 files are ready for Docker"
