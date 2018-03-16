@@ -1,4 +1,4 @@
-package elFarolBar;
+package lab3.helper;
 
 import java.io.PrintStream;
 

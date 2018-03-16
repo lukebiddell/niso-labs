@@ -1,4 +1,4 @@
-package elFarolBar;
+package lab3.helper;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.DoubleStream;

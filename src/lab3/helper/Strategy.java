@@ -1,4 +1,4 @@
-package elFarolBar;
+package lab3.helper;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;

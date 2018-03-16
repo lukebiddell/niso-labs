@@ -1,4 +1,4 @@
-package lab3;
+package lab3.main;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,12 +8,12 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 
-import elFarolBar.AlgorithmType;
-import elFarolBar.CoevolutionAlgorithm;
-import elFarolBar.ElFarolBar;
-import elFarolBar.State;
-import elFarolBar.Strategy;
-import elFarolBar.StrategyPopulation;
+import lab3.helper.AlgorithmType;
+import lab3.helper.CoevolutionAlgorithm;
+import lab3.helper.ElFarolBar;
+import lab3.helper.State;
+import lab3.helper.Strategy;
+import lab3.helper.StrategyPopulation;
 
 public class Main {
 
