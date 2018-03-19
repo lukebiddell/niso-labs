@@ -88,7 +88,11 @@ public class Main {
 		try {
 			TrainingData data = TrainingData.parseFile("training/bitcoin-price-full.tsv");
 			System.out.println(data);
-		} catch (IOException e) {
+			Expression expr = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
+			System.out.println(expr);
+			System.out.println("Depth: " + expr.depth());
+
+		} catch (IOException | SexpParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
