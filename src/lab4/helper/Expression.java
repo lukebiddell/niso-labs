@@ -1,14 +1,16 @@
 package lab4.helper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.OptionalDouble;
+import java.util.LinkedList;
+import java.util.concurrent.ThreadLocalRandom;
 
 import lab4.expressions.ExpressionType;
 
 public abstract class Expression {
 
-	protected ExpressionType type;
-	protected Expression[] e;
+	protected final ExpressionType type;
+	protected final Expression[] e;
 
 	public abstract double eval(Vector v);
 
@@ -37,11 +39,13 @@ public abstract class Expression {
 	}
 
 	public int depth() {
-		if (!isTerminal()) {
-			return 1 + Arrays.stream(e).mapToInt(exp -> exp.depth()).max().getAsInt();
-		} else {
-			return 0;
-		}
+		return isTerminal() ? 0
+				: 1 + Arrays.stream(e).mapToInt(Expression::depth).max().orElseThrow(IllegalStateException::new);
+
+	}
+
+	public int size() {
+		return isTerminal() ? 1 : 1 + Arrays.stream(e).mapToInt(Expression::size).sum();
 	}
 
 	public int arity() {
@@ -49,7 +53,29 @@ public abstract class Expression {
 	}
 
 	public boolean isTerminal() {
-		return e.length == 0;
+		return arity() == 0;
+	}
+
+	public static LinkedList<Expression> crossOver(Expression e1_orig, Expression e2_orig) {
+		Expression e1 = e1_orig.clone();
+		Expression e2 = e2_orig.clone();
+		
+		
+
+		return null;
+	}
+
+	public Expression clone() {
+		// Expression e = ExpressionFactory.(type);
+		return ExpressionFactory.clone(this);
+	}
+
+	public ArrayList<Expression> children() {
+		return new ArrayList<>(Arrays.asList(e));
+	}
+
+	public ExpressionType getType() {
+		return type;
 	}
 
 }

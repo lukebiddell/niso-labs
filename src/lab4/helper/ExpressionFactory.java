@@ -37,7 +37,7 @@ public class ExpressionFactory {
 			return new NumberExpression(value);
 		} else {
 			ExpressionType type = ExpressionType.valueOf(sexp.get(0).toString().toUpperCase());
-			System.out.println("Type : " + type + "\tLength: " + sexp.getLength());
+			//System.out.println("Type : " + type + "\tLength: " + sexp.getLength());
 			// return fromType(type, sexp.)
 			return fromType(type, sexp);
 			/*
@@ -118,7 +118,15 @@ public class ExpressionFactory {
 
 			return fromType(type, expressions);
 		}
-
+		
+	}
+	
+	public static Expression clone(Expression e){
+		if(!e.isTerminal()){
+			return fromType(e.getType(), e.children());
+		} else{
+			return new NumberExpression(e.eval(null));
+		}
 	}
 
 }
