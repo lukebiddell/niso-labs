@@ -13,8 +13,8 @@ public class DataExpression extends Expression {
 	@Override
 	public double eval(Vector v) {
 		int n = v.size();
-		int k = Math.floorMod((int) Math.floor(e[0].eval(v)), n);
-		
+		//int k = Math.floorMod((int) Math.floor(e[0].eval(v)), n);
+		int k = (int) Math.abs(Math.floor(e[0].eval(v))) % n;
 		return makeFinite(v.get(k));
 	}
 
