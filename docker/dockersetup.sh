@@ -22,6 +22,7 @@ then
 	rm -r docker/niso4-lxb550/src
 	mkdir -p docker/niso4-lxb550/src
 	cp -r src/lab4 docker/niso4-lxb550/src/
+	cp -r jars/ docker/niso4-lxb550/
 	echo "Lab 4 files are ready for Docker"
 else
 	echo "Argument should be a lab number"
