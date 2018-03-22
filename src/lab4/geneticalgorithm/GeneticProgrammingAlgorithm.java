@@ -48,8 +48,10 @@ public class GeneticProgrammingAlgorithm {
 		while (System.currentTimeMillis() < endTime) {
 			pop = pop.evolve(k, chi, data);
 			pop.findBestIndividual(data);
-			System.out.println(pop.getBestFitness() + "\t" + pop.getBestExpression());
+			//System.out.println(pop.getBestFitness() + "\t" + pop.getBestExpression());
 		}
+		
+		System.out.println(pop.getBestExpression());
 
 		if (logging) {
 			StringBuilder sb = new StringBuilder();

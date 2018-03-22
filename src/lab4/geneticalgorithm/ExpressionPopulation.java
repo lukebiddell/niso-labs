@@ -51,8 +51,10 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 		while (pop.size() < size()) {
 			ArrayList<Expression> toAdd = new ArrayList<Expression>();
 
-			toAdd.add(tournament(k, data));
-
+			//toAdd.add(tournament(k, data));
+			toAdd.addAll(Expression.crossOver(tournament(k,data), tournament(k,data)));
+			
+			
 			int spaceLeft = Math.min(size() - pop.size(), toAdd.size());
 
 			for (int i = 0; i < spaceLeft; i++) {
