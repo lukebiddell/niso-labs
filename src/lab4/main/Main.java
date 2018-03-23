@@ -85,10 +85,17 @@ public class Main {
 	}
 
 	private static void test() {
-		try {
-			while (true) {
-				// TrainingData data =
-				// TrainingData.parseFile("training/bitcoin-price-full.tsv");
+		
+			try {
+				TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
+				System.out.println(data);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			/*while (true) {
 				Expression expr1 = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
 				System.out.println("Expr1:\t" + expr1);
 				// System.out.println(expr1.clone());
@@ -108,12 +115,8 @@ public class Main {
 				}
 				
 				System.out.println("------------------------------------------");
-			}
+			}*/
 
-		} catch (SexpParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	private static void ex1(String expr_str, int n, String x_str) {

@@ -28,6 +28,12 @@ public abstract class Expression {
 		return data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
 				.orElseThrow(IllegalStateException::new);
 	}
+	
+	public double fitnessScaledToSize(TrainingData data){
+		double fitness = fitness(data);
+		//double size = size();
+		return fitness;// + fitness * (0.001 * size);
+	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder("(").append(type.toString().toLowerCase());
@@ -64,8 +70,8 @@ public abstract class Expression {
 		Expression randParent1 = e1.getRandomParentExpression();
 		Expression randParent2 = e2.getRandomParentExpression();
 
-		System.out.println("Rand parent 1:\t" + randParent1);
-		System.out.println("Rand parent 2:\t" + randParent2);
+		//System.out.println("Rand parent 1:\t" + randParent1);
+		//System.out.println("Rand parent 2:\t" + randParent2);
 
 		swapRandomChildren(randParent1, randParent2);
 		
@@ -91,8 +97,8 @@ public abstract class Expression {
 		Expression randChild1 = e1.e[rand1];
 		Expression randChild2 = e2.e[rand2];
 		
-		System.out.println("Rand child 1:\t" + randChild1);
-		System.out.println("Rand child 2:\t" + randChild2);
+		//System.out.println("Rand child 1:\t" + randChild1);
+		//System.out.println("Rand child 2:\t" + randChild2);
 		
 		e1.e[rand1] = randChild2;
 		e2.e[rand2] = randChild1;

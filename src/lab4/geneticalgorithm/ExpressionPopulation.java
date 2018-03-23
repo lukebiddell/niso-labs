@@ -53,7 +53,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 
 			//toAdd.add(tournament(k, data));
 			toAdd.addAll(Expression.crossOver(tournament(k,data), tournament(k,data)));
-			
+			//System.out.println("toAdd:\t" + toAdd);
 			
 			int spaceLeft = Math.min(size() - pop.size(), toAdd.size());
 
@@ -64,6 +64,8 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 
 		pop.generation = generation + 1;
 
+		//System.out.println(pop);
+		
 		return pop;
 		//return this;
 	}
@@ -78,7 +80,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 
 			Expression fighter = get(rand);
 
-			fitness = fighter.fitness(data);
+			fitness = fighter.fitnessScaledToSize(data);
 			//System.out.println(fitness);
 			if (fitness <= best_fitness) {
 				if (fitness < best_fitness) {
@@ -99,12 +101,14 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 	}
 
 	public void findBestIndividual(TrainingData data){
+		//System.out.println("a thing");
 		for(Expression e : this){
 			double fitness = e.fitness(data);
+			
+			//double fitness = e.fitnessScaledToSize(data);
 			if(fitness < bestFitness){
 				bestFitness = fitness;
 				bestExpression = e;
-				return;
 			}
 		}
 	}
@@ -115,12 +119,6 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 	
 	public double getBestFitness(){
 		return bestFitness;
-	}
-
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		return sb.toString();
 	}
 	
 	public String toLogString() {
