@@ -3,9 +3,9 @@ package lab4.expressions;
 import lab4.helper.Expression;
 import lab4.helper.Vector;
 
-public class NumberExpression extends Expression {
+public final class NumberExpression extends Expression {
 
-	private double value;
+	private final double value;
 
 	public NumberExpression(double value) {
 		super(ExpressionType.NUMBER);
