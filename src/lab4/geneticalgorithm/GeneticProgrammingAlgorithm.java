@@ -45,23 +45,19 @@ public class GeneticProgrammingAlgorithm {
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
 		ExpressionPopulation pop = ExpressionPopulation.randomFullMethod(lambda, depth);
-		//System.out.println(pop);
-		Expression best_expression = pop.get(0);
-		double best_fitness = Double.MAX_VALUE;
+		pop.findBestIndividual(data);
+		
 		while (System.currentTimeMillis() < endTime) {
 			pop = pop.evolve(k, chi, data);
 			pop.findBestIndividual(data);
-			if(pop.getBestFitness() < best_fitness){
-				best_fitness = pop.getBestFitness();
-				best_expression = pop.getBestExpression();
-				//System.out.println(best_fitness);
-			}
+			System.out.println(pop.getBestFitness());
+
 			//System.out.println(pop.getBestFitness());// + "\t" + pop.getBestExpression());
 		}
 		
 		//System.out.println(pop.getBestFitness());// + "\t" + pop.getBestExpression());
 		//System.out.println(best_fitness);
-		System.out.println(best_expression);
+		System.out.println(pop.getBestExpression());
 		//System.out.println(best_expression.size());
 
 		if (logging) {

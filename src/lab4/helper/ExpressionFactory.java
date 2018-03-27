@@ -24,7 +24,7 @@ import lab4.expressions.SubExpression;
 
 public class ExpressionFactory {
 
-	private static final double MAX_RAND = 1000;
+	private static final double MAX_RAND = 100;
 
 	public static Expression parse(String sexp_string) throws SexpParserException {
 		Sexp sexp = SexpFactory.parse(sexp_string);

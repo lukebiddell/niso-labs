@@ -27,8 +27,9 @@ public abstract class Expression {
 	}
 
 	public double fitness(TrainingData data) {
-		return data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
+		double fitness = data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
 				.orElseThrow(IllegalStateException::new);
+		return Double.isFinite(fitness) ?  fitness : Double.MAX_VALUE;
 	}
 
 	public double fitnessScaledToSize(TrainingData data) {
@@ -163,25 +164,20 @@ public abstract class Expression {
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;
-		int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
-		// System.out.println("Branches:\t" + parent.countBranches());
+		
+		int rand = ThreadLocalRandom.current().nextInt(depth);
+		
+		if(rand == 0){
+			int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
 
-		while (!q.isEmpty() && count <= ranNum) {
-			Expression e = q.remove();
+			e[ranNum] = replacement;
 			
-			
-
-			if (count == ranNum) {
-				return e;
-			}
-
-			if (q.isEmpty())
-				e.children().stream().filter(c -> !c.isTerminal()).forEachOrdered(q::add);
-
-			count++;
+			return 
+		} else {
+			return
 		}
-
-		throw new IllegalArgumentException("Random parent not found from " + toString());
+		
+		
 	}
 
 	public Expression clone() {
