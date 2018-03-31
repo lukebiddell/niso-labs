@@ -30,9 +30,9 @@ public abstract class Expression {
 	}
 	
 	public double fitnessScaledToSize(TrainingData data){
-		double fitness = fitness(data);
+		double fitness = fitness(data) / 100;
 		//double size = size();
-		return fitness;// + fitness * (0.001 * size);
+		return fitness;// + fitness * (0.01 * size);
 	}
 
 	public String toString() {

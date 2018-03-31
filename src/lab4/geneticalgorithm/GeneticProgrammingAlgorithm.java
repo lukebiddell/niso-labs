@@ -54,13 +54,13 @@ public class GeneticProgrammingAlgorithm {
 			if(pop.getBestFitness() < best_fitness){
 				best_fitness = pop.getBestFitness();
 				best_expression = pop.getBestExpression();
-				//System.out.println(best_fitness);
+				System.out.println(best_fitness);
 			}
 			//System.out.println(pop.getBestFitness());// + "\t" + pop.getBestExpression());
 		}
 		
 		//System.out.println(pop.getBestFitness());// + "\t" + pop.getBestExpression());
-		//System.out.println(best_fitness);
+		System.out.println(best_fitness);
 		System.out.println(best_expression);
 		//System.out.println(best_expression.size());
 
