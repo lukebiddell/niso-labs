@@ -82,7 +82,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 
 			Expression fighter = get(rand);
 
-			fitness = fighter.fitnessScaledToSize(data);
+			fitness = fighter.fitness(data);
 			//System.out.println(fitness);
 			if (fitness <= best_fitness) {
 				if (fitness < best_fitness) {

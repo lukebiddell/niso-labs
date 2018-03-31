@@ -31,20 +31,6 @@ public abstract class Expression {
 				.orElseThrow(IllegalStateException::new);
 		return Double.isFinite(fitness) ?  fitness : Double.MAX_VALUE;
 	}
-<<<<<<< HEAD
-	
-	public double fitnessScaledToSize(TrainingData data){
-		double fitness = fitness(data) / 100;
-		//double size = size();
-		return fitness;// + fitness * (0.01 * size);
-=======
-
-	public double fitnessScaledToSize(TrainingData data) {
-		double fitness = fitness(data);
-		// double size = size();
-		return fitness;// + fitness * (0.001 * size);
->>>>>>> 27add07f574b0787128e1f64f927e7c860dd3e01
-	}
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder("(").append(type.toString().toLowerCase());
