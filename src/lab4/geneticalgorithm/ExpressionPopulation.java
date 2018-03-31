@@ -48,6 +48,8 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 	public ExpressionPopulation evolve(int k, double chi, TrainingData data) {
 		ExpressionPopulation pop = new ExpressionPopulation();
 
+		pop.add(getBestExpression());
+		
 		while (pop.size() < size()) {
 			ArrayList<Expression> toAdd = new ArrayList<Expression>();
 
@@ -94,8 +96,11 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 		}
 		
 		if(best_fighters.size() == 0){
-			System.out.println(fitness);
+			System.out.println("Error, no best_fighters, fitness: " + fitness);
 		}
+		
+		if(best_fighters.size() > 1)
+		System.out.println("Size: " + best_fighters.size());
 		
 		return best_fighters.get(ThreadLocalRandom.current().nextInt(best_fighters.size()));
 	}

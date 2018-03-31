@@ -12,6 +12,8 @@ public abstract class Expression {
 
 	protected final ExpressionType type;
 	protected final Expression[] e;
+	private int size = -1;
+	private int depth = -1;
 
 	public abstract double eval(Vector v);
 
@@ -25,14 +27,23 @@ public abstract class Expression {
 	}
 
 	public double fitness(TrainingData data) {
-		return data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
+		double fitness = data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
 				.orElseThrow(IllegalStateException::new);
+		return Double.isFinite(fitness) ?  fitness : Double.MAX_VALUE;
 	}
+<<<<<<< HEAD
 	
 	public double fitnessScaledToSize(TrainingData data){
 		double fitness = fitness(data) / 100;
 		//double size = size();
 		return fitness;// + fitness * (0.01 * size);
+=======
+
+	public double fitnessScaledToSize(TrainingData data) {
+		double fitness = fitness(data);
+		// double size = size();
+		return fitness;// + fitness * (0.001 * size);
+>>>>>>> 27add07f574b0787128e1f64f927e7c860dd3e01
 	}
 
 	public String toString() {
@@ -46,13 +57,20 @@ public abstract class Expression {
 	}
 
 	public int depth() {
-		return isTerminal() ? 0
-				: 1 + Arrays.stream(e).mapToInt(Expression::depth).max().orElseThrow(IllegalStateException::new);
+		return depth < 0 ? calculateDepth() : depth;
+	}
 
+	private int calculateDepth() {
+		return depth = isTerminal() ? 0
+				: 1 + Arrays.stream(e).mapToInt(Expression::depth).max().orElseThrow(IllegalStateException::new);
 	}
 
 	public int size() {
-		return isTerminal() ? 1 : 1 + Arrays.stream(e).mapToInt(Expression::size).sum();
+		return size < 0 ? calculateSize() : size;
+	}
+
+	private int calculateSize() {
+		return size = isTerminal() ? 1 : 1 + Arrays.stream(e).mapToInt(Expression::size).sum();
 	}
 
 	public int arity() {
@@ -63,6 +81,14 @@ public abstract class Expression {
 		return arity() == 0;
 	}
 
+	public static Expression mutate(Expression e_orig) {
+		Expression e = e_orig.clone();
+		Expression randParent = e.getRandomParentExpression();
+		int rand1 = ThreadLocalRandom.current().nextInt(e.arity());
+
+		return e;
+	}
+
 	public static LinkedList<Expression> crossOver(Expression e1_orig, Expression e2_orig) {
 		Expression e1 = e1_orig.clone();
 		Expression e2 = e2_orig.clone();
@@ -70,64 +96,62 @@ public abstract class Expression {
 		Expression randParent1 = e1.getRandomParentExpression();
 		Expression randParent2 = e2.getRandomParentExpression();
 
-		//System.out.println("Rand parent 1:\t" + randParent1);
-		//System.out.println("Rand parent 2:\t" + randParent2);
+		// System.out.println("Rand parent 1:\t" + randParent1);
+		// System.out.println("Rand parent 2:\t" + randParent2);
 
 		swapRandomChildren(randParent1, randParent2);
-		
+
 		LinkedList<Expression> es = new LinkedList<Expression>();
 		es.add(e1);
 		es.add(e2);
-		
-		
-		/*int fullSize = e1.size();
-		for (Expression exp : e1.children()) {
-			if (ThreadLocalRandom.current().nextInt(fullSize) > exp.size()) {
 
-			}
-		}*/
+		/*
+		 * int fullSize = e1.size(); for (Expression exp : e1.children()) { if
+		 * (ThreadLocalRandom.current().nextInt(fullSize) > exp.size()) {
+		 * 
+		 * } }
+		 */
 
 		return es;
 	}
-	
-	private static void swapRandomChildren(Expression e1, Expression e2){
+
+	private static void swapRandomChildren(Expression e1, Expression e2) {
 		int rand1 = ThreadLocalRandom.current().nextInt(e1.arity());
 		int rand2 = ThreadLocalRandom.current().nextInt(e2.arity());
-		
+
 		Expression randChild1 = e1.e[rand1];
 		Expression randChild2 = e2.e[rand2];
-		
-		//System.out.println("Rand child 1:\t" + randChild1);
-		//System.out.println("Rand child 2:\t" + randChild2);
-		
+
+		// System.out.println("Rand child 1:\t" + randChild1);
+		// System.out.println("Rand child 2:\t" + randChild2);
+
 		e1.e[rand1] = randChild2;
 		e2.e[rand2] = randChild1;
 	}
-	
-	/*private Expression getRandomChild(){
-		return isTerminal() ? null : e[ThreadLocalRandom.current().nextInt(arity())];
-	}*/
 
-	/*public static Expression selectRandomParent(Expression parent, int n) {
-		if (ThreadLocalRandom.current().nextDouble() < n / parent.size()) {
-			return parent;
-		} else {
+	/*
+	 * private Expression getRandomChild(){ return isTerminal() ? null :
+	 * e[ThreadLocalRandom.current().nextInt(arity())]; }
+	 */
 
-		}
-		for (Expression child : parent.children()) {
-
-			if (ThreadLocalRandom.current().nextInt(size) < child.size()) {
-
-			}
-		}
-	}*/
+	/*
+	 * public static Expression selectRandomParent(Expression parent, int n) {
+	 * if (ThreadLocalRandom.current().nextDouble() < n / parent.size()) {
+	 * return parent; } else {
+	 * 
+	 * } for (Expression child : parent.children()) {
+	 * 
+	 * if (ThreadLocalRandom.current().nextInt(size) < child.size()) {
+	 * 
+	 * } } }
+	 */
 
 	private Expression getRandomParentExpression() {
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;
 		int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
-		//System.out.println("Branches:\t" + parent.countBranches());
+		// System.out.println("Branches:\t" + parent.countBranches());
 
 		while (!q.isEmpty() && count <= ranNum) {
 			Expression e = q.remove();
@@ -135,13 +159,33 @@ public abstract class Expression {
 			if (count == ranNum) {
 				return e;
 			}
-				
+
 			e.children().stream().filter(c -> !c.isTerminal()).forEachOrdered(q::add);
 
 			count++;
 		}
 
 		throw new IllegalArgumentException("Random parent not found from " + toString());
+	}
+
+	private Expression replaceRandomExpression(Expression replacement) {
+		Queue<Expression> q = new LinkedList<Expression>();
+		q.add(this);
+		int count = 0;
+		
+		int rand = ThreadLocalRandom.current().nextInt(depth);
+		
+		if(rand == 0){
+			int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
+
+			e[ranNum] = replacement;
+			
+			return 
+		} else {
+			return
+		}
+		
+		
 	}
 
 	public Expression clone() {
@@ -155,8 +199,8 @@ public abstract class Expression {
 	public ExpressionType getType() {
 		return type;
 	}
-	
-	public int countBranches(){
+
+	public int countBranches() {
 		return isTerminal() ? 0 : 1 + Arrays.stream(e).mapToInt(Expression::countBranches).sum();
 
 	}
