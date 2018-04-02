@@ -2,6 +2,8 @@ package lab4.helper;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import de.tudresden.inf.lat.jsexp.Sexp;
 import de.tudresden.inf.lat.jsexp.SexpFactory;
@@ -21,6 +23,7 @@ import lab4.expressions.NumberExpression;
 import lab4.expressions.PowExpression;
 import lab4.expressions.SqrtExpression;
 import lab4.expressions.SubExpression;
+import lab4.geneticalgorithm.InitialPopulationMethod;
 
 public class ExpressionFactory {
 
@@ -37,28 +40,26 @@ public class ExpressionFactory {
 			return new NumberExpression(value);
 		} else {
 			ExpressionType type = ExpressionType.valueOf(sexp.get(0).toString().toUpperCase());
-			//System.out.println("Type : " + type + "\tLength: " + sexp.getLength());
+			// System.out.println("Type : " + type + "\tLength: " + sexp.getLength());
 			// return fromType(type, sexp.)
 			return fromType(type, sexp);
 			/*
-			 * switch (type) { case ADD: return new
-			 * AddExpression(parse(sexp.get(1)), parse(sexp.get(2))); case SUB:
-			 * return new SubExpression(parse(sexp.get(1)), parse(sexp.get(2)));
-			 * case MUL: return new MulExpression(parse(sexp.get(1)),
-			 * parse(sexp.get(2))); case DIV: return new
-			 * DivExpression(parse(sexp.get(1)), parse(sexp.get(2))); case POW:
-			 * return new PowExpression(parse(sexp.get(1)), parse(sexp.get(2)));
-			 * case SQRT: return new SqrtExpression(parse(sexp.get(1))); case
-			 * LOG: return new LogExpression(parse(sexp.get(1))); case EXP:
-			 * return new ExpExpression(parse(sexp.get(1))); case MAX: return
-			 * new MaxExpression(parse(sexp.get(1)), parse(sexp.get(2))); case
-			 * IFLEQ: return new IfleqExpression(parse(sexp.get(1)),
-			 * parse(sexp.get(2)), parse(sexp.get(3)), parse(sexp.get(4))); case
-			 * DATA: return new DataExpression(parse(sexp.get(1))); case DIFF:
-			 * return new DiffExpression(parse(sexp.get(1)),
-			 * parse(sexp.get(2))); case AVG: return new
-			 * AvgExpression(parse(sexp.get(1)), parse(sexp.get(2))); default:
-			 * throw new Error("Error parsing expression: " + type); }
+			 * switch (type) { case ADD: return new AddExpression(parse(sexp.get(1)),
+			 * parse(sexp.get(2))); case SUB: return new SubExpression(parse(sexp.get(1)),
+			 * parse(sexp.get(2))); case MUL: return new MulExpression(parse(sexp.get(1)),
+			 * parse(sexp.get(2))); case DIV: return new DivExpression(parse(sexp.get(1)),
+			 * parse(sexp.get(2))); case POW: return new PowExpression(parse(sexp.get(1)),
+			 * parse(sexp.get(2))); case SQRT: return new
+			 * SqrtExpression(parse(sexp.get(1))); case LOG: return new
+			 * LogExpression(parse(sexp.get(1))); case EXP: return new
+			 * ExpExpression(parse(sexp.get(1))); case MAX: return new
+			 * MaxExpression(parse(sexp.get(1)), parse(sexp.get(2))); case IFLEQ: return new
+			 * IfleqExpression(parse(sexp.get(1)), parse(sexp.get(2)), parse(sexp.get(3)),
+			 * parse(sexp.get(4))); case DATA: return new
+			 * DataExpression(parse(sexp.get(1))); case DIFF: return new
+			 * DiffExpression(parse(sexp.get(1)), parse(sexp.get(2))); case AVG: return new
+			 * AvgExpression(parse(sexp.get(1)), parse(sexp.get(2))); default: throw new
+			 * Error("Error parsing expression: " + type); }
 			 */
 		}
 
@@ -113,18 +114,33 @@ public class ExpressionFactory {
 		} else {
 			ArrayList<Expression> expressions = new ArrayList<Expression>();
 
-			for (int i = 0; i < type.size(); i++)
-				expressions.add(random(depth - 1, includeTerminal));
+			IntStream.range(0, type.size()).forEach(i -> expressions.add(random(depth - 1, includeTerminal)));
 
 			return fromType(type, expressions);
 		}
-		
+
 	}
 	
-	public static Expression clone(Expression e){
-		if(!e.isTerminal()){
-			return fromType(e.getType(), e.children());
-		} else{
+	public static Expression random(InitialPopulationMethod method, int depth) {
+		switch (method) {
+		case FULL:
+			return random(depth, false);
+		case GROWTH:
+			return random(depth, true);
+		case HALFHALF:
+			return random(depth, true);
+		default:
+			return null;
+		}
+	}
+
+	public static Expression clone(Expression e) {
+		if (!e.isTerminal()) {
+			ArrayList<Expression> children = e.children().stream()
+					.map(Expression::clone)
+					.collect(Collectors.toCollection(ArrayList::new));
+			return fromType(e.getType(), children);
+		} else {
 			return new NumberExpression(e.eval(null));
 		}
 	}

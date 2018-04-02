@@ -9,6 +9,7 @@ import java.util.Date;
 
 import de.tudresden.inf.lat.jsexp.SexpParserException;
 import lab4.geneticalgorithm.GeneticProgrammingAlgorithm;
+import lab4.geneticalgorithm.InitialPopulationMethod;
 import lab4.helper.Expression;
 import lab4.helper.ExpressionFactory;
 import lab4.helper.TrainingData;
@@ -88,14 +89,9 @@ public class Main {
 		
 			try {
 				TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
-				System.out.println(data);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			
-			/*while (true) {
+				//System.out.println(data);
+				
+				
 				Expression expr1 = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
 				System.out.println("Expr1:\t" + expr1);
 				// System.out.println(expr1.clone());
@@ -111,11 +107,30 @@ public class Main {
 				//System.out.println("Expr2 size:\t" + expr2.size());
 
 				for (Expression e : Expression.crossOver(expr1, expr2)) {
-					System.out.println(e);
+					System.out.println("Crossover: " + e);
 				}
 				
+				for(int i = 0; i < 10; i++) {
+					Expression m1 = Expression.mutate(expr1, InitialPopulationMethod.FULL, 4);
+				Expression m2 = Expression.mutate(expr2, InitialPopulationMethod.FULL, 4);
+
+				System.out.println("Mutated 1: " + m1);
+				System.out.println("Mutated 2: " + m2);
+
+				
 				System.out.println("------------------------------------------");
-			}*/
+				}
+				
+				
+			} catch (IOException | SexpParserException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			
+			
+				
+			
 
 	}
 

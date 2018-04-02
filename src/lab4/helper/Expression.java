@@ -7,6 +7,8 @@ import java.util.Queue;
 import java.util.concurrent.ThreadLocalRandom;
 
 import lab4.expressions.ExpressionType;
+import lab4.geneticalgorithm.ExpressionPopulation;
+import lab4.geneticalgorithm.InitialPopulationMethod;
 
 public abstract class Expression {
 
@@ -14,6 +16,8 @@ public abstract class Expression {
 	protected final Expression[] e;
 	private int size = -1;
 	private int depth = -1;
+
+	private static final int MAX_BRANCHES = Integer.MAX_VALUE;
 
 	public abstract double eval(Vector v);
 
@@ -29,7 +33,7 @@ public abstract class Expression {
 	public double fitness(TrainingData data) {
 		double fitness = data.getLines().stream().mapToDouble(l -> Math.pow(fitness(l), 2)).average()
 				.orElseThrow(IllegalStateException::new);
-		return Double.isFinite(fitness) ?  fitness : Double.MAX_VALUE;
+		return Double.isFinite(fitness) ? fitness : Double.MAX_VALUE;
 	}
 
 	public String toString() {
@@ -43,6 +47,8 @@ public abstract class Expression {
 	}
 
 	public int depth() {
+		//TODO
+		//return calculateDepth();
 		return depth < 0 ? calculateDepth() : depth;
 	}
 
@@ -52,6 +58,8 @@ public abstract class Expression {
 	}
 
 	public int size() {
+		//TODO
+		//return calculateSize();
 		return size < 0 ? calculateSize() : size;
 	}
 
@@ -67,11 +75,17 @@ public abstract class Expression {
 		return arity() == 0;
 	}
 
-	public static Expression mutate(Expression e_orig) {
+	public static Expression mutate(Expression e_orig, InitialPopulationMethod method, int depth) {
 		Expression e = e_orig.clone();
+		
 		Expression randParent = e.getRandomParentExpression();
-		int rand1 = ThreadLocalRandom.current().nextInt(e.arity());
+		//while((randParent = e.getRandomParentExpression()).isTerminal());
 
+		int rand1 = ThreadLocalRandom.current().nextInt(randParent.arity());
+		
+		randParent.e[rand1] = ExpressionFactory.random(method, depth);
+		
+		
 		return e;
 	}
 
@@ -121,9 +135,9 @@ public abstract class Expression {
 	 */
 
 	/*
-	 * public static Expression selectRandomParent(Expression parent, int n) {
-	 * if (ThreadLocalRandom.current().nextDouble() < n / parent.size()) {
-	 * return parent; } else {
+	 * public static Expression selectRandomParent(Expression parent, int n) { if
+	 * (ThreadLocalRandom.current().nextDouble() < n / parent.size()) { return
+	 * parent; } else {
 	 * 
 	 * } for (Expression child : parent.children()) {
 	 * 
@@ -136,7 +150,9 @@ public abstract class Expression {
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;
-		int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
+		int ranNum = ThreadLocalRandom.current().nextInt(Integer.min(MAX_BRANCHES, countBranches()));
+
+		// int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
 		// System.out.println("Branches:\t" + parent.countBranches());
 
 		while (!q.isEmpty() && count <= ranNum) {
@@ -151,6 +167,8 @@ public abstract class Expression {
 			count++;
 		}
 
+		System.out.println("Count: " + count + "\tranNum: " + ranNum + "\tcountBranches: " + countBranches());
+		
 		throw new IllegalArgumentException("Random parent not found from " + toString());
 	}
 
@@ -158,20 +176,21 @@ public abstract class Expression {
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;
-		
+
 		int rand = ThreadLocalRandom.current().nextInt(depth);
-		
-		if(rand == 0){
+
+		if (rand == 0) {
 			int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
 
 			e[ranNum] = replacement;
-			
-			return 
+
+			// return
 		} else {
-			return
+			// return
 		}
-		
-		
+
+		return null;
+
 	}
 
 	public Expression clone() {

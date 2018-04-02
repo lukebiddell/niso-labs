@@ -51,7 +51,7 @@ public class GeneticProgrammingAlgorithm {
 			pop = pop.evolve(k, chi, data);
 			pop.findBestIndividual(data);
 
-			System.out.println(pop.getBestFitness());
+			System.out.println("Generation: " + pop.getGeneration() + "\tFitness: " + pop.getBestFitness());
 			//System.out.println(pop.getBestFitness());// + "\t" + pop.getBestExpression());
 		}
 		
