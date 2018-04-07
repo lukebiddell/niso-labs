@@ -12,8 +12,8 @@ import lab4.geneticalgorithm.InitialPopulationMethod;
 
 public abstract class Expression {
 
-	protected final ExpressionType type;
-	protected final Expression[] e;
+	protected ExpressionType type;
+	protected Expression[] e;
 	private int size = -1;
 	private int depth = -1;
 
@@ -211,6 +211,24 @@ public abstract class Expression {
 		System.out.println("Count: " + count + "\tranNum: " + ranNum + "\tcountBranches: " + countBranches());
 		
 		throw new IllegalArgumentException("Random parent not found from " + toString());
+	}
+	
+	private static void swapExpression(Expression e1, Expression e2){
+		//Expression temp = e1.clone();
+		ExpressionType temp_type = e1.type;
+		Expression[] temp_e = e1.e;
+		int temp_depth = e1.depth;
+		int temp_size = e1.size;
+		
+		e1.type = e2.type;
+		e1.e = e2.e;
+		e1.depth = e2.depth;
+		e1.size = e2.size;
+		
+		e2.type = temp_type;
+		e2.e = temp_e;
+		e2.depth = temp_depth;
+		e2.size = temp_size;
 	}
 
 	private Expression replaceRandomExpression(Expression replacement) {
