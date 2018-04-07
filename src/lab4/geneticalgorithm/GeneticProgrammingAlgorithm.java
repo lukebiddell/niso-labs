@@ -48,7 +48,8 @@ public class GeneticProgrammingAlgorithm {
 		pop.findBestIndividual(data);
 		
 		while (System.currentTimeMillis() < endTime) {
-			pop = pop.evolve(k, chi, data);
+			System.out.println(pop.getBestExpression());
+			pop = pop.evolve(k, chi, data, depth);
 			pop.findBestIndividual(data);
 
 			System.out.println("Generation: " + pop.getGeneration() + "\tFitness: " + pop.getBestFitness());
@@ -59,6 +60,8 @@ public class GeneticProgrammingAlgorithm {
 
 		//System.out.println(best_fitness);
 		System.out.println(pop.getBestExpression());
+		
+		pop.stream().forEach(System.out::println);
 		//System.out.println(best_expression.size());
 
 		if (logging) {

@@ -77,16 +77,54 @@ public abstract class Expression {
 
 	public static Expression mutate(Expression e_orig, InitialPopulationMethod method, int depth) {
 		Expression e = e_orig.clone();
+		Expression randParent;
 		
-		Expression randParent = e.getRandomParentExpression();
-		//while((randParent = e.getRandomParentExpression()).isTerminal());
-
+		while((randParent = e.getRandomParentExpression()).isTerminal());
 		int rand1 = ThreadLocalRandom.current().nextInt(randParent.arity());
-		
 		randParent.e[rand1] = ExpressionFactory.random(method, depth);
 		
-		
 		return e;
+	}
+	
+	public static Expression mutate2(Expression e_orig, InitialPopulationMethod method, int depth) {
+		Expression root = e_orig.clone();
+
+		Queue<Expression> q = new LinkedList<Expression>();
+		
+		double chi = 0.25;
+
+		
+		boolean mutated = false;
+		// int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
+		// System.out.println("Branches:\t" + parent.countBranches());
+		while(!mutated) {
+			q.add(root);
+			
+			if(chi >= ThreadLocalRandom.current().nextDouble()) {
+				return ExpressionFactory.random(method, depth);
+			}
+
+			while (!q.isEmpty()) {
+				double ranNum = ThreadLocalRandom.current().nextDouble();
+
+				Expression e = q.remove();
+
+				if (!e.isTerminal() && ranNum < chi) {
+					int rand1 = ThreadLocalRandom.current().nextInt(e.arity());
+					e.e[rand1] = ExpressionFactory.random(method, depth);
+					mutated = true;
+					//System.out.println("Mutated");
+					break;
+				}
+
+				e.children().stream().filter(c -> !c.isTerminal()).forEachOrdered(q::add);
+			}
+		}
+		return root;
+
+		//System.out.println("Count: " + count + "\tranNum: " + ranNum + "\tcountBranches: " + countBranches());
+		
+		//throw new IllegalArgumentException("Random parent not found from " + toString());
 	}
 
 	public static LinkedList<Expression> crossOver(Expression e1_orig, Expression e2_orig) {
@@ -125,6 +163,8 @@ public abstract class Expression {
 		// System.out.println("Rand child 1:\t" + randChild1);
 		// System.out.println("Rand child 2:\t" + randChild2);
 
+		//System.out.println("Swapping\t" + randChild1 + "\tand\t" + randChild2);
+		
 		e1.e[rand1] = randChild2;
 		e2.e[rand2] = randChild1;
 	}
@@ -150,7 +190,8 @@ public abstract class Expression {
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;
-		int ranNum = ThreadLocalRandom.current().nextInt(Integer.min(MAX_BRANCHES, countBranches()));
+		
+		int ranNum = countBranches() == 0 ? 0 : ThreadLocalRandom.current().nextInt(Integer.min(MAX_BRANCHES, countBranches()));
 
 		// int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
 		// System.out.println("Branches:\t" + parent.countBranches());

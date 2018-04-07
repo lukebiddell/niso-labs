@@ -86,51 +86,48 @@ public class Main {
 	}
 
 	private static void test() {
-		
-			try {
-				TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
-				//System.out.println(data);
-				
-				
-				Expression expr1 = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
-				System.out.println("Expr1:\t" + expr1);
-				// System.out.println(expr1.clone());
-				// System.out.println("Depth:\t" + expr1.depth());
-				// System.out.println("Size:\t" + expr1.size());
 
-				Expression expr2 = ExpressionFactory.parse("(log (add (mul 4 2) 2))");
-				System.out.println("Expr2:\t" + expr2);
-				
-				//System.out.println("Expr1 branches:\t" + expr1.countBranches());
-				//System.out.println("Expr2 branches:\t" + expr2.countBranches());
-				//System.out.println("Expr1 size:\t" + expr1.size());
-				//System.out.println("Expr2 size:\t" + expr2.size());
+		try {
+			TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
+			// System.out.println(data);
 
+			Expression expr1 = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
+			System.out.println("Expr1:\t\t" + expr1);
+			// System.out.println(expr1.clone());
+			// System.out.println("Depth:\t" + expr1.depth());
+			// System.out.println("Size:\t" + expr1.size());
+
+			Expression expr2 = ExpressionFactory.parse("(log (add (mul 4 2) 2))");
+			System.out.println("Expr2:\t\t" + expr2);
+
+			System.out.println("------------------------------------------");
+
+			// System.out.println("Expr1 branches:\t" + expr1.countBranches());
+			// System.out.println("Expr2 branches:\t" + expr2.countBranches());
+			// System.out.println("Expr1 size:\t" + expr1.size());
+			// System.out.println("Expr2 size:\t" + expr2.size());
+			for (int i = 0; i < 10; i++) {
 				for (Expression e : Expression.crossOver(expr1, expr2)) {
-					System.out.println("Crossover: " + e);
+					System.out.println("Crossover:\t" + e);
 				}
-				
-				for(int i = 0; i < 10; i++) {
-					Expression m1 = Expression.mutate(expr1, InitialPopulationMethod.FULL, 4);
-				Expression m2 = Expression.mutate(expr2, InitialPopulationMethod.FULL, 4);
-
-				System.out.println("Mutated 1: " + m1);
-				System.out.println("Mutated 2: " + m2);
-
-				
 				System.out.println("------------------------------------------");
-				}
-				
-				
-			} catch (IOException | SexpParserException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 			}
 
-			
-			
-				
-			
+			for (int i = 0; i < 10; i++) {
+				Expression m1 = Expression.mutate(expr1, InitialPopulationMethod.FULL, 4);
+				Expression m2 = Expression.mutate(expr2, InitialPopulationMethod.FULL, 4);
+
+				System.out.println("Mutated 1:\t" + m1);
+				System.out.println("Mutated 2:\t" + m2);
+
+				System.out.println("------------------------------------------");
+			}
+
+		} catch (IOException | SexpParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

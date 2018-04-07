@@ -19,7 +19,6 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 	private double bestFitness = Double.MAX_VALUE;
 	
 	private InitialPopulationMethod method;
-	private int depth;
 
 	private ExpressionPopulation(InitialPopulationMethod method, int depth) {
 		this.method = method;
@@ -56,7 +55,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 		return pop;
 	}
 
-	public ExpressionPopulation evolve(int k, double chi, TrainingData data) {
+	public ExpressionPopulation evolve(int k, double chi, TrainingData data, int depth) {
 		ExpressionPopulation pop = new ExpressionPopulation(method, depth);
 
 		pop.add(getBestExpression().clone());

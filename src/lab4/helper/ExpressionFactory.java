@@ -27,7 +27,7 @@ import lab4.geneticalgorithm.InitialPopulationMethod;
 
 public class ExpressionFactory {
 
-	private static final double MAX_RAND = 100;
+	private static final double MAX_RAND = 10;
 
 	public static Expression parse(String sexp_string) throws SexpParserException {
 		Sexp sexp = SexpFactory.parse(sexp_string);
