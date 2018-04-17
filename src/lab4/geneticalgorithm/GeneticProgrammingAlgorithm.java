@@ -48,7 +48,7 @@ public class GeneticProgrammingAlgorithm {
 		pop.findBestIndividual(data);
 		
 		while (System.currentTimeMillis() < endTime) {
-			System.out.println(pop.getBestExpression());
+			//System.out.println(pop.getBestExpression());
 			pop = pop.evolve(k, chi, data, depth);
 			pop.findBestIndividual(data);
 
