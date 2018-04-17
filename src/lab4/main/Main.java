@@ -88,7 +88,7 @@ public class Main {
 	private static void test() {
 
 		try {
-			TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
+			//TrainingData data = TrainingData.parseFile("training/EEGEyeState.tsv");
 			// System.out.println(data);
 
 			Expression expr1 = ExpressionFactory.parse("(mul (add 1 2) (log 8))");
@@ -124,7 +124,7 @@ public class Main {
 				System.out.println("------------------------------------------");
 			}
 
-		} catch (IOException | SexpParserException e) {
+		} catch (SexpParserException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

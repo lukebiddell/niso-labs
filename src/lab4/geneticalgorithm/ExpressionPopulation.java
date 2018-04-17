@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import javax.sql.rowset.CachedRowSet;
 
 import lab4.helper.Expression;
 import lab4.helper.ExpressionFactory;

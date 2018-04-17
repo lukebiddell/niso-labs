@@ -7,7 +7,6 @@ import java.util.Queue;
 import java.util.concurrent.ThreadLocalRandom;
 
 import lab4.expressions.ExpressionType;
-import lab4.geneticalgorithm.ExpressionPopulation;
 import lab4.geneticalgorithm.InitialPopulationMethod;
 
 public abstract class Expression {
@@ -229,27 +228,6 @@ public abstract class Expression {
 		e2.e = temp_e;
 		e2.depth = temp_depth;
 		e2.size = temp_size;
-	}
-
-	private Expression replaceRandomExpression(Expression replacement) {
-		Queue<Expression> q = new LinkedList<Expression>();
-		q.add(this);
-		int count = 0;
-
-		int rand = ThreadLocalRandom.current().nextInt(depth);
-
-		if (rand == 0) {
-			int ranNum = ThreadLocalRandom.current().nextInt(countBranches());
-
-			e[ranNum] = replacement;
-
-			// return
-		} else {
-			// return
-		}
-
-		return null;
-
 	}
 
 	public Expression clone() {

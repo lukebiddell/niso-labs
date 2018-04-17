@@ -61,7 +61,7 @@ public class GeneticProgrammingAlgorithm {
 		//System.out.println(best_fitness);
 		System.out.println(pop.getBestExpression());
 		
-		pop.stream().forEach(System.out::println);
+		//pop.stream().forEach(System.out::println);
 		//System.out.println(best_expression.size());
 
 		if (logging) {
