@@ -2,7 +2,6 @@ package lab4.geneticalgorithm;
 
 import java.io.PrintStream;
 
-import lab4.helper.Expression;
 import lab4.helper.TrainingData;
 
 //import helper.GeneticAlgorithm;
@@ -15,6 +14,7 @@ public class GeneticProgrammingAlgorithm {
 	private double chi = 5;
 	private int k = 2;
 	private int depth = 5;
+	private InitialPopulationMethod method = InitialPopulationMethod.GROWTH;
 
 	public GeneticProgrammingAlgorithm(int lambda, int n, int m, TrainingData data, int time_budget) {
 		this.lambda = lambda;
@@ -25,7 +25,7 @@ public class GeneticProgrammingAlgorithm {
 	}
 
 	public GeneticProgrammingAlgorithm(int lambda, int n, int m, TrainingData data, int depth, int time_budget, double chi,
-			int k) {
+			int k, InitialPopulationMethod method) {
 		this.lambda = lambda;
 		this.n = n;
 		this.m = m;
@@ -34,6 +34,7 @@ public class GeneticProgrammingAlgorithm {
 		this.chi = chi;
 		this.k = k;
 		this.depth = depth;
+		this.method = method;
 	}
 
 	public void startAlgorithm() {
@@ -44,7 +45,7 @@ public class GeneticProgrammingAlgorithm {
 		boolean logging = out != System.out;
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
-		ExpressionPopulation pop = ExpressionPopulation.randomGrowthMethod(lambda, depth);
+		ExpressionPopulation pop = ExpressionPopulation.random(method, depth, lambda);
 		pop.findBestIndividual(data);
 		
 		while (System.currentTimeMillis() < endTime) {

@@ -19,12 +19,25 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 	
 	private InitialPopulationMethod method;
 
+	public static ExpressionPopulation random(InitialPopulationMethod method, int depth, int lambda) {
+		switch (method) {
+		case FULL:
+			return randomFullMethod(lambda, depth);
+		case GROWTH:
+			return randomGrowthMethod(lambda, depth);
+		case HALFHALF:
+			return randomRampedHalfHalf(lambda, depth);
+		default:
+			return null;
+		}
+	}
+	
 	private ExpressionPopulation(InitialPopulationMethod method, int depth) {
 		this.method = method;
 	}
 	
 	
-	public static ExpressionPopulation randomFullMethod(int lambda, int treeDepth) {
+	private static ExpressionPopulation randomFullMethod(int lambda, int treeDepth) {
 		ExpressionPopulation pop = new ExpressionPopulation(InitialPopulationMethod.FULL, treeDepth);
 		
 		for (int i = 0; i < lambda; i++) {
@@ -34,7 +47,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 		return pop;
 	}
 
-	public static ExpressionPopulation randomGrowthMethod(int lambda, int maxDepth) {
+	private static ExpressionPopulation randomGrowthMethod(int lambda, int maxDepth) {
 		ExpressionPopulation pop = new ExpressionPopulation(InitialPopulationMethod.GROWTH, maxDepth);
 
 		for (int i = 0; i < lambda; i++) {
@@ -44,7 +57,7 @@ public class ExpressionPopulation extends ArrayList<Expression> {
 		return pop;
 	}
 
-	public static ExpressionPopulation randomRampedHalfHalf(int lambda, int maxDepth) {
+	private static ExpressionPopulation randomRampedHalfHalf(int lambda, int maxDepth) {
 		ExpressionPopulation pop = new ExpressionPopulation(InitialPopulationMethod.HALFHALF, maxDepth);
 
 		for (int i = 0; i < lambda; i++) {
