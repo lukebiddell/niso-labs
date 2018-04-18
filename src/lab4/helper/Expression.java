@@ -78,6 +78,12 @@ public abstract class Expression {
 		Expression e = e_orig.clone();
 		Expression randParent;
 		
+		if(e.isTerminal()){
+			return ExpressionFactory.random(method, depth);
+			//double r = ThreadLocalRandom.current().nextDouble(-2, 2);
+			
+			//return new NumberExpression(e.eval(null) * r);
+		}
 		while((randParent = e.getRandomParentExpression()).isTerminal());
 		int rand1 = ThreadLocalRandom.current().nextInt(randParent.arity());
 		randParent.e[rand1] = ExpressionFactory.random(method, depth);
@@ -132,11 +138,19 @@ public abstract class Expression {
 
 		Expression randParent1 = e1.getRandomParentExpression();
 		Expression randParent2 = e2.getRandomParentExpression();
+		
+		if(randParent1 != null && randParent2 != null){
+			swapRandomChildren(randParent1, randParent2);
+		}
 
 		// System.out.println("Rand parent 1:\t" + randParent1);
 		// System.out.println("Rand parent 2:\t" + randParent2);
+		
+		/*System.out.println(e1);
+		System.out.println(randParent1);
+		System.out.println(e2);
+		System.out.println(randParent2);*/
 
-		swapRandomChildren(randParent1, randParent2);
 
 		LinkedList<Expression> es = new LinkedList<Expression>();
 		es.add(e1);
@@ -186,6 +200,10 @@ public abstract class Expression {
 	 */
 
 	private Expression getRandomParentExpression() {
+		if(this.isTerminal()){
+			return null;
+		}
+		
 		Queue<Expression> q = new LinkedList<Expression>();
 		q.add(this);
 		int count = 0;

@@ -14,7 +14,7 @@ public class GeneticProgrammingAlgorithm {
 	private TrainingData data;
 	private double chi = 5;
 	private int k = 2;
-	private int depth = 10;
+	private int depth = 5;
 
 	public GeneticProgrammingAlgorithm(int lambda, int n, int m, TrainingData data, int time_budget) {
 		this.lambda = lambda;
@@ -44,7 +44,7 @@ public class GeneticProgrammingAlgorithm {
 		boolean logging = out != System.out;
 		long endTime = System.currentTimeMillis() + time_budget * 1000;
 
-		ExpressionPopulation pop = ExpressionPopulation.randomFullMethod(lambda, depth);
+		ExpressionPopulation pop = ExpressionPopulation.randomGrowthMethod(lambda, depth);
 		pop.findBestIndividual(data);
 		
 		while (System.currentTimeMillis() < endTime) {
